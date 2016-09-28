@@ -1,7 +1,7 @@
 <%= simple_form_for @search, url: dashboard_search_path(@model_names), method: :post do |f| %>
   <div class='search-fields'>
     <% @search_attributes.each do |attribute, term| %>
-      <%= f.input "#{attribute}_#{term}", required: false, label: false,
+      <%= f.input "#{attribute.to_s.gsub('.', '_')}_#{term}", required: false, label: false,
         placeholder: t("activerecord.attributes.#{@model_name}.#{attribute}") %>
     <% end %>
   </div>

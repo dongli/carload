@@ -14,6 +14,6 @@ class DashboardController < ApplicationController
   }
   SEARCH_ATTRIBUTES_ON_INDEX = {
     product: { name: :cont },
-    item: { name: :cont }
+    item: { name: :cont, 'product.name' => :cont }
   }
 end

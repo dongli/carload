@@ -17,6 +17,10 @@
   display: inline-flex;
   .form-group {
     display: inline-flex;
+    margin-right: 5px;
+  }
+  .form-group:last-child {
+    margin-right: 0;
   }
 }
 .search-buttons {

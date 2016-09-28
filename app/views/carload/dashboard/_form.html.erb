@@ -1,4 +1,4 @@
-<%= simple_form_for @object, url: "/carload/dashboard/#{@model_names}" do |f| %>
+<%= simple_form_for @object, url: "/carload/dashboard/#{@model_names}/#{@object.id}" do |f| %>
   <% @model_class.columns_hash.each do |name, column| %>
     <% next if ['id', 'created_at', 'updated_at'].include? name %>
     <%= generate_input f, @model_name, name, column %>
