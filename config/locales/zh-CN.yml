@@ -8,7 +8,11 @@ zh-CN:
       back_to_root: 返回应用
       search: 搜索
 
-    error: 遇到操作错误！
+
+    error:
+      title: 遇到操作错误！
+      message:
+        unmanaged_model: 数据模型「%{model}」未被管理！
 
     form:
       title:

@@ -8,7 +8,10 @@ en:
       back_to_root: Back to Root
       search: Search
 
-    error: Encounter web operation error!
+    error:
+      title: Encounter web operation error!
+      message:
+        unmanaged_model: You are trying to access unmanaged %{model}!
 
     form:
       title:
