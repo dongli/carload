@@ -2,6 +2,7 @@ en:
   carload:
     actions: Actions
     action:
+      add: Add
       submit: Submit
       back: Back
       back_to_root: Back to Root
@@ -15,3 +16,10 @@ en:
         edit: Edit %{model}
       message:
         delete: Are you sure to delete this %{model}?
+
+    activerecord:
+      created_at: Created At
+      updated_at: Updated At
+
+    footer:
+      message: 2016 &copy; Powered by <a href='https://github.com/dongli/carload'>Carload</a>

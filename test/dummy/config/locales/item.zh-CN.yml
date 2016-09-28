@@ -1,0 +1,9 @@
+zh-CN:
+  activerecord:
+    models:
+      item: 项目
+    attributes:
+      item:
+        name: 名称
+        product:
+          name: 产品名称

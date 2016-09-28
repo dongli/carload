@@ -9,7 +9,13 @@
         <tr>
           <th width='20'>ID</th>
           <% @show_attributes.each do |attribute| %>
-            <th width='100'><%= t("activerecord.attributes.#{@model_name}.#{attribute}") %></th>
+            <th width='100'>
+              <% begin %>
+                <%= t("activerecord.attributes.#{@model_name}.#{attribute}", raise: true) %>
+              <% rescue %>
+                <%= t("carload.activerecord.#{attribute}") %>
+              <% end %>
+            </th>
           <% end %>
           <th width='20'><%= t('carload.actions') %></th>
         </tr>

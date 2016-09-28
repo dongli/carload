@@ -1,0 +1,25 @@
+zh-CN:
+  carload:
+    actions: 操作
+    action:
+      add: 添加
+      submit: 提交
+      back: 后退
+      back_to_root: 返回应用
+      search: 搜索
+
+    error: 遇到操作错误！
+
+    form:
+      title:
+        create: 创建「%{model}」
+        edit: 修改「%{model}」
+      message:
+        delete: 确定删除这个「%{model}」？
+
+    activerecord:
+      created_at: 创建时间
+      updated_at: 更新时间
+
+    footer:
+      message: 2016 &copy; 此后台由<a href='https://github.com/dongli/carload'>Carload</a>自豪地提供
