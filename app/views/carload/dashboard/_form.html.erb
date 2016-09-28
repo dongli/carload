@@ -3,7 +3,5 @@
     <% next if ['id', 'created_at', 'updated_at'].include? name %>
     <%= f.input name %>
   <% end %>
-  <div class='form-controls'>
-    <%= f.button :submit, t('carload.action.submit'), class: 'btn btn-success' %>
-  </div>
+  <%= f.button :submit, t('carload.action.submit'), class: 'btn btn-primary' %>
 <% end %>

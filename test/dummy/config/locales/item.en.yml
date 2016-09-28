@@ -2,3 +2,6 @@ en:
   activerecord:
     models:
       item: Item
+    attributes:
+      item:
+        name: Name

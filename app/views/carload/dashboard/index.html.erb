@@ -1,24 +1,34 @@
 <div class='panel panel-default model-index-panel'>
   <div class='panel-heading'>
     <%= render 'carload/dashboard/shared/index_buttons' %>
+    <br>
+    <%= render 'carload/dashboard/shared/search_fields' %>
   </div>
   <div class='panel-body'>
     <table class='table table-striped'>
       <thead>
         <tr>
           <th width='20'>ID</th>
-          <% @index_columns.each do |column| %>
+          <% @show_attributes.each do |column| %>
             <th width='100'><%= t("activerecord.attributes.#{@model_name}.#{column}") %></th>
           <% end %>
+          <th width='20'><%= t('carload.actions') %></th>
         </tr>
       </thead>
       <tbody>
         <% @objects.each do |object| %>
           <tr>
             <td><%= object.id %></td>
-            <% @index_columns.each do |column| %>
+            <% @show_attributes.each do |column| %>
               <td><%= object.send column %>
             <% end %>
+            <td>
+              <div class='model-action-buttons'>
+                <%= link_to fa_icon('edit'), dashboard_edit_path(@model_names, object) %>
+                <%= link_to fa_icon('trash'), dashboard_delete_path(@model_names, object), method: :delete,
+                  data: { confirm: t('carload.form.message.delete', model: @model_name) } %>
+              </div>
+            </td>
           </tr>
         <% end %>
       </tbody>

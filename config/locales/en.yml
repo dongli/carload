@@ -1,12 +1,17 @@
 en:
   carload:
+    actions: Actions
     action:
       submit: Submit
       back: Back
       back_to_root: Back to Root
+      search: Search
 
     error: Encounter web operation error!
 
     form:
       title:
         create: Create %{model}
+        edit: Edit %{model}
+      message:
+        delete: Are you sure to delete this %{model}?

@@ -69,6 +69,14 @@ th {
 .panel {
   border-color: $main-color;
 }
+.panel-danger {
+  border-color: #ddd;
+  .panel-heading {
+    color: white;
+    text-shadow: 0 -1px 0 #900;
+    background-color: #df3e3e;
+  }
+}
 
 .container {
   width: 100%;
@@ -96,4 +104,24 @@ th {
 
 .center {
   text-align: center;
+}
+
+.btn-primary {
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0,0,0,0.15);
+  background-color: #60b044;
+  background-image: -webkit-linear-gradient(#8add6d, #60b044);
+  background-image: linear-gradient(#8add6d, #60b044);
+  border-color: #5ca941;
+}
+.btn-primary:hover {
+  color: #fff;
+  background-color: #569e3d;
+  background-image: -webkit-linear-gradient(#79d858, #569e3d);
+  background-image: linear-gradient(#79d858, #569e3d);
+  border-color: #4a993e;
+}
+
+.form-control:hover {
+  border-color: $main-color;
 }

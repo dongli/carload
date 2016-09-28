@@ -1,0 +1,11 @@
+<%= simple_form_for @search, url: dashboard_index_path(@model_names), method: :post do |f| %>
+  <div class='search-fields'>
+    <% @search_attributes.each do |attribute, term| %>
+      <%= f.input "#{attribute}_#{term}", required: false, label: false,
+        placeholder: t("activerecord.attributes.#{@model_name}.#{attribute}") %>
+    <% end %>
+  </div>
+  <div class='search-buttons'>
+    <%= f.submit t('carload.action.search'), class: 'btn btn-primary' %>
+  </div>
+<% end %>

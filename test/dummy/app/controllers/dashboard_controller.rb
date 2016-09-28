@@ -7,4 +7,7 @@ class DashboardController < ApplicationController
   SHOW_ATTRIBUTES_ON_INDEX = {
     item: [ :name ]
   }
+  SEARCH_ATTRIBUTES_ON_INDEX = {
+    item: { name: :cont }
+  }
 end

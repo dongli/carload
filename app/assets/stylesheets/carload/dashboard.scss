@@ -7,3 +7,18 @@
 .model-index-panel {
   width: 100%;
 }
+.model-new-panel, .model-edit-panel {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.search-fields {
+  display: inline-flex;
+  .form-group {
+    display: inline-flex;
+  }
+}
+.search-buttons {
+  display: inline-flex;
+}

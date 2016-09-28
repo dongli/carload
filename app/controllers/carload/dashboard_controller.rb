@@ -12,7 +12,8 @@ module Carload
     def index
       @search = @model_class.search(params[:q])
       @objects = @search.result.page(params[:page]).per(2)
-      @index_columns = SHOW_ATTRIBUTES_ON_INDEX[@model_name] + [:created_at, :updated_at]
+      @show_attributes = SHOW_ATTRIBUTES_ON_INDEX[@model_name] + [:created_at, :updated_at]
+      @search_attributes = SEARCH_ATTRIBUTES_ON_INDEX[@model_name]
       render "dashboard/#{@model_names}/index.html.erb"
     end
 
@@ -41,6 +42,8 @@ module Carload
     end
 
     def destroy
+      @object.destroy
+      redirect_to action: :index, model: @model_names
     end
 
     def error
