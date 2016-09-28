@@ -1,0 +1,9 @@
+<div class='panel panel-danger error-panel'>
+  <div class='panel-heading'>
+    <%= t('carload.error') %>
+    <%= link_to t('carload.action.back'), 'javascript:history.back()', class: 'btn btn-xs btn-default pull-right' %>
+  </div>
+  <div class='panel-body'>
+    <%= @error %>
+  </div>
+</div>

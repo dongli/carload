@@ -1,0 +1,31 @@
+<div class='panel panel-default model-index-panel'>
+  <div class='panel-heading'>
+    <%= render 'carload/dashboard/shared/index_buttons' %>
+  </div>
+  <div class='panel-body'>
+    <table class='table table-striped'>
+      <thead>
+        <tr>
+          <th width='20'>ID</th>
+          <% @index_columns.each do |column| %>
+            <th width='100'><%= t("activerecord.attributes.#{@model_name}.#{column}") %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% @objects.each do |object| %>
+          <tr>
+            <td><%= object.id %></td>
+            <% @index_columns.each do |column| %>
+              <td><%= object.send column %>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class='center'>
+      <%= paginate @objects %>
+    </div>
+  </div>
+</div>

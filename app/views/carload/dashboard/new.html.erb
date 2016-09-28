@@ -1,0 +1,12 @@
+<div class='panel panel-default'>
+  <div class='panel-heading'>
+    <%= t('carload.form.title.create', model: @model_class) %>
+  </div>
+  <div class='panel-body'>
+    <% begin %>
+      <%= render "dashboard/#{@model_names}/form" %>
+    <% rescue %>
+      <%= render "carload/dashboard/form" %>
+    <% end %>
+  </div>
+</div>

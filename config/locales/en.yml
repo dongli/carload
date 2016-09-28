@@ -1,0 +1,12 @@
+en:
+  carload:
+    action:
+      submit: Submit
+      back: Back
+      back_to_root: Back to Root
+
+    error: Encounter web operation error!
+
+    form:
+      title:
+        create: Create %{model}

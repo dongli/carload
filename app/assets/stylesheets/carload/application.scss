@@ -1,0 +1,99 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require font-awesome
+ *= require select2
+ *= require select2-bootstrap
+ *= require_tree .
+ *= require_self
+ */
+
+$spacing: 16px;
+
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+
+@import 'colors';
+
+body {
+  color: $text-color;
+}
+
+#top-nav-buttons {
+  text-align: center;
+  margin-bottom: $spacing;
+  a:first-child {
+    border-top-left-radius: 0;
+  }
+  a:last-child {
+    border-top-right-radius: 0;
+  }
+  a {
+    border-color: $main-color;
+  }
+  a:hover {
+    background-color: lighten($main-color, 20%);
+    border-color: lighten($main-color, 20%);
+  }
+  a.active {
+    background-color: $main-color;
+    color: white;
+  }
+  a.active:hover {
+    background-color: lighten($main-color, 20%);
+    border-color: lighten($main-color, 20%);
+  }
+}
+
+a {
+  color: $main-color;
+}
+a:hover {
+  color: $main-color;
+  text-decoration: none;
+}
+
+th {
+  color: $main-color;
+}
+
+.panel {
+  border-color: $main-color;
+}
+
+.container {
+  width: 100%;
+}
+
+.pagination {
+  li > a {
+    color: $main-color;
+    border-color: $main-color;
+  }
+  li > a:hover {
+    color: $main-color;
+    background-color: lighten($main-color, 20%);
+    border-color: lighten($main-color, 20%);
+  }
+  li.active > a {
+    background-color: $main-color;
+    border-color: $main-color;
+  }
+  li.active > a:hover {
+    background-color: lighten($main-color, 20%);;
+    border-color: lighten($main-color, 20%);
+  }
+}
+
+.center {
+  text-align: center;
+}
