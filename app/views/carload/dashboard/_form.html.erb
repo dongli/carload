@@ -1,7 +1,7 @@
 <%= simple_form_for @object, url: "/carload/dashboard/#{@model_names}" do |f| %>
   <% @model_class.columns_hash.each do |name, column| %>
     <% next if ['id', 'created_at', 'updated_at'].include? name %>
-    <%= f.input name %>
+    <%= generate_input f, @model_name, name, column %>
   <% end %>
   <%= f.button :submit, t('carload.action.submit'), class: 'btn btn-primary' %>
 <% end %>

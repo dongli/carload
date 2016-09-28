@@ -5,3 +5,5 @@ en:
     attributes:
       item:
         name: Name
+        product:
+          name: Product Name

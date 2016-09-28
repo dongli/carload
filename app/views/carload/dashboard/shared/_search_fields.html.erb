@@ -1,4 +1,4 @@
-<%= simple_form_for @search, url: dashboard_index_path(@model_names), method: :post do |f| %>
+<%= simple_form_for @search, url: dashboard_search_path(@model_names), method: :post do |f| %>
   <div class='search-fields'>
     <% @search_attributes.each do |attribute, term| %>
       <%= f.input "#{attribute}_#{term}", required: false, label: false,

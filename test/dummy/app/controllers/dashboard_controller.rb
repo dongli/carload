@@ -1,13 +1,19 @@
 class DashboardController < ApplicationController
-  DEFAULT_MODEL = :item
-  MODELS = [ :item ]
+  DEFAULT_MODEL = :product
+  MODELS = [ :product, :item ]
   PERMITTED_ATTRIBUTES = {
-    item: [ :name ]
+    product: [ :name ],
+    item: [ :name, :product_id ]
   }.freeze
   SHOW_ATTRIBUTES_ON_INDEX = {
-    item: [ :name ]
+    product: [ :name ],
+    item: [ :name, 'product.name' ]
+  }
+  ASSOCIATIONS = {
+    item: { product: :name }
   }
   SEARCH_ATTRIBUTES_ON_INDEX = {
+    product: { name: :cont },
     item: { name: :cont }
   }
 end

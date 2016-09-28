@@ -46,13 +46,18 @@ module Carload
       redirect_to action: :index, model: @model_names
     end
 
+    def search
+      params[:action] = :index # To make rescue_missing_template use correct index action.
+      index
+    end
+
     def error
     end
 
     private
 
     def set_model
-      @model_names = ( params[:model] || DEFAULT_MODEL ).pluralize
+      @model_names = ( params[:model] || DEFAULT_MODEL ).to_s.pluralize
       @model_name = @model_names.singularize.to_sym
       raise Carload::UnmanagedModelError.new(@model_name) if not MODELS.include? @model_name
       @model_class = @model_name.to_s.classify.constantize

@@ -9,8 +9,8 @@
       <thead>
         <tr>
           <th width='20'>ID</th>
-          <% @show_attributes.each do |column| %>
-            <th width='100'><%= t("activerecord.attributes.#{@model_name}.#{column}") %></th>
+          <% @show_attributes.each do |attribute| %>
+            <th width='100'><%= t("activerecord.attributes.#{@model_name}.#{attribute}") %></th>
           <% end %>
           <th width='20'><%= t('carload.actions') %></th>
         </tr>
@@ -19,8 +19,8 @@
         <% @objects.each do |object| %>
           <tr>
             <td><%= object.id %></td>
-            <% @show_attributes.each do |column| %>
-              <td><%= object.send column %>
+            <% @show_attributes.each do |attribute| %>
+              <td><%= generate_show object, attribute %></td>
             <% end %>
             <td>
               <div class='model-action-buttons'>
