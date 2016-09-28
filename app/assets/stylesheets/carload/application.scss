@@ -13,8 +13,6 @@
  *= require font-awesome
  *= require select2
  *= require select2-bootstrap
- *= require_tree .
- *= require_self
  */
 
 $spacing: 16px;
@@ -23,6 +21,7 @@ $spacing: 16px;
 @import 'bootstrap';
 
 @import 'colors';
+@import 'dashboard';
 
 body {
   color: $text-color;

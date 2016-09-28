@@ -6,6 +6,9 @@
 
 .model-index-panel {
   width: 100%;
+  table {
+    margin-bottom: 0;
+  }
 }
 .model-new-panel, .model-edit-panel {
   max-width: 600px;
@@ -13,11 +16,20 @@
   margin-right: auto;
 }
 
+#dashboard-index-buttons {
+  display: inline-block;
+  margin-right: $spacing;
+}
+#new_q {
+  display: inline-block;
+}
+
 .search-fields {
   display: inline-flex;
   .form-group {
     display: inline-flex;
     margin-right: 5px;
+    margin-bottom: 0;
   }
   .form-group:last-child {
     margin-right: 0;
