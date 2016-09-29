@@ -14,7 +14,7 @@ module Carload
     @@config[:dashboard] = ExtendedHash.new
     @@config[:dashboard][:permits_user] = ExtendedHash.new
     yield @@config
-    if @@config[:auth_solution] != :devise
+    if not [:devise, :none].include? @@config[:auth_solution]
       raise UnsupportedError.new("authentication solution #{@@config[:auth_solution]}")
     end
 

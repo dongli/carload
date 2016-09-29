@@ -1,6 +1,7 @@
 class DashboardPolicy < Struct.new(:user, :dashboard)
   [:index, :new, :edit, :destroy].each do |action|
     define_method :"#{action}?" do
+      return true if Carload.auth_solution == :none
       return false if not user
       action = :all if not Carload.dashboard[:permits_user][action]
       Array(Carload.dashboard[:permits_user][action]).each do |permission|
