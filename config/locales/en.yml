@@ -9,9 +9,15 @@ en:
       search: Search
 
     error:
-      title: Encounter web operation error!
+      title:
+        dashboard: Encounter web operation error!
+        unauthorized: You are not authorized to do the following operation!
       message:
         unmanaged_model: You are trying to access unmanaged %{model}!
+        dashboard_index: Access dashboard index page.
+        dashboard_new: Create new data at dashboard.
+        dashboard_edit: Edit data at dashboard.
+        dashboard_destroy: Delete data at dashboard.
 
     form:
       title:

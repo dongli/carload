@@ -1,7 +1,39 @@
-.error-panel {
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+//= require font-awesome
+//= require select2
+//= require select2-bootstrap
+
+$spacing: 16px;
+
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+
+@import 'colors';
+@import 'common';
+
+#top-nav-buttons {
+  text-align: center;
+  margin-bottom: $spacing;
+  a:first-child {
+    border-top-left-radius: 0;
+  }
+  a:last-child {
+    border-top-right-radius: 0;
+  }
+  a {
+    border-color: $main-color;
+  }
+  a:hover {
+    background-color: lighten($main-color, 20%);
+    border-color: lighten($main-color, 20%);
+  }
+  a.active {
+    background-color: $main-color;
+    color: white;
+  }
+  a.active:hover {
+    background-color: lighten($main-color, 20%);
+    border-color: lighten($main-color, 20%);
+  }
 }
 
 .model-index-panel {

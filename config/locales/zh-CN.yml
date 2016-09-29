@@ -10,9 +10,15 @@ zh-CN:
 
 
     error:
-      title: 遇到操作错误！
+      title:
+        dashboard: 遇到操作错误！
+        unauthorized: 您未被授权执行如下操作！
       message:
         unmanaged_model: 数据模型「%{model}」未被管理！
+        dashboard_index: 访问后台数据。
+        dashboard_new: 在后台创建新的数据。
+        dashboard_edit: 在后台修改数据。
+        dashboard_destroy: 在后台删除数据。
 
     form:
       title:

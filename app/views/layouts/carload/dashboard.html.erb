@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carload</title>
+  <%= stylesheet_link_tag    'carload/dashboard', media: 'all' %>
+  <%= javascript_include_tag 'carload/dashboard' %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+  <div class='container'>
+    <div id='top-nav-buttons'>
+      <div class='btn-group' role='group'>
+        <%= link_to t('carload.action.back_to_root'), root_path, class: 'btn btn-default' %>
+        <% Dashboard.models.keys.each do |model| %>
+          <%= link_to t("activerecord.models.#{model}"), dashboard_index_path(model),
+            class: "#{@model_name == model ? 'active' : ''} btn btn-default" %>
+        <% end %>
+      </div>
+    </div>
+
+    <%= yield %>
+
+    <footer class='center'>
+      <%= raw t('carload.footer.message') %>
+    </footer>
+  </div>
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 # which attributes are shown, etc.
 
 class Dashboard < Carload::Dashboard
-  # There two DSL block types:
+  # There are two DSL block types:
   #
   #   model :<model_name> do |spec|
   #     # Whether model should be displayed when URL does not specify one

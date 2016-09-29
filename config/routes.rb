@@ -9,5 +9,8 @@ Carload::Engine.routes.draw do
   patch  'dashboard/:model/:id'    => 'dashboard#update'
   put    'dashboard/:model/:id'    => 'dashboard#update'
   delete 'dashboard/:model/:id'    => 'dashboard#destroy', as: :dashboard_delete
-  get    'dashboard/error'         => 'dashboard#error',   as: :dashboard_error
+
+  [:dashboard, :unauthorized].each do |error_type|
+    get "errors/#{error_type}" => "errors##{error_type}_error", as: "#{error_type}_error"
+  end
 end

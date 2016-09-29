@@ -1,25 +1,14 @@
 module Carload
   class Dashboard
-    class DashboardHash < Hash
-      def method_missing method, *args, &block
-        key = method.to_s.gsub('=', '').to_sym
-        if method.to_s =~ /=$/
-          self[key] = args.first
-        else
-          self[key]
-        end
-      end
-    end
-
     class ModelSpec
       attr_accessor :default, :attributes, :index_page, :associated_models
 
       def initialize
         @default = false
-        @attributes = DashboardHash.new
-        @index_page = DashboardHash.new
-        @index_page[:shows] = DashboardHash.new
-        @index_page[:searches] = DashboardHash.new
+        @attributes = ExtendedHash.new
+        @index_page = ExtendedHash.new
+        @index_page[:shows] = ExtendedHash.new
+        @index_page[:searches] = ExtendedHash.new
         @associated_models = {}
       end
     end

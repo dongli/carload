@@ -1,8 +1,8 @@
-require_dependency "carload/application_controller"
+require_dependency 'carload/application_controller'
 
 module Carload
   class DashboardController < ApplicationController
-    layout 'carload/application'
+    layout 'carload/dashboard'
     rescue_from ActionView::MissingTemplate, with: :rescue_missing_template
     rescue_from Carload::UnmanagedModelError, with: :rescue_unmanaged_model_error
 
@@ -10,6 +10,7 @@ module Carload
     before_action :set_object, only: [:edit, :update, :destroy]
 
     def index
+      authorize :dashboard, :index?
       @search = @model_class.search(params[:q])
       @objects = @search.result.page(params[:page])
       @show_attributes = Dashboard.model(@model_name).index_page[:shows][:attributes] + [:created_at, :updated_at]
@@ -18,13 +19,16 @@ module Carload
     end
 
     def new
+      authorize :dashboard, :new?
       @object = @model_class.new
     end
 
     def edit
+      authorize :dashboard, :edit?
     end
 
     def create
+      authorize :dashboard, :create?
       @object = @model_class.create model_params
       if @object.save
         redirect_to action: :index, model: @model_names # TODO: To show page.
@@ -34,6 +38,7 @@ module Carload
     end
 
     def update
+      authorize :dashboard, :update?
       if @object.update model_params
         redirect_to action: :index, model: @model_names # TODO: To show page.
       else
@@ -42,6 +47,7 @@ module Carload
     end
 
     def destroy
+      authorize :dashboard, :destroy?
       @object.destroy
       redirect_to action: :index, model: @model_names
     end
@@ -49,9 +55,6 @@ module Carload
     def search
       params[:action] = :index # To make rescue_missing_template use correct index action.
       index
-    end
-
-    def error
     end
 
     private
@@ -76,8 +79,7 @@ module Carload
     end
 
     def rescue_unmanaged_model_error exception
-      @error = exception.instance_values['error']
-      render :error
+      redirect_to dashboard_error_path(message: exception.message)
     end
   end
 end
