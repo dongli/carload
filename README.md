@@ -5,6 +5,10 @@ This is another dashboard gem for Rails (see [Rails Admin], [ActiveAdmin] and [A
 [ActiveAdmin]: http://activeadmin.info/
 [Administrate]: https://github.com/thoughtbot/administrate
 
+![](http://7xvqi7.com1.z0.glb.clouddn.com/carload.dashboard.snapshot.en.png)
+
+![](http://7xvqi7.com1.z0.glb.clouddn.com/carload.dashboard.snapshot.zh-CN.png)
+
 ## Usage
 - Run `rails g carload:install` to mount engine routes, add require statement and add initializer.
 
