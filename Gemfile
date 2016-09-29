@@ -12,5 +12,6 @@ gemspec
 
 # To use a debugger
 gem 'byebug', group: [:development, :test]
+gem 'sqlite3'
 gem 'devise', '~> 4.1.1'
 gem 'enumerize'

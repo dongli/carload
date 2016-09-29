@@ -28,6 +28,4 @@ Gem::Specification.new do |s|
   s.add_dependency 'kaminari', '~> 0.17.0'
   s.add_dependency 'pundit', '~> 1.1.0'
   s.add_dependency 'select2-rails', '~> 4.0.3'
-
-  s.add_development_dependency 'sqlite3'
 end
