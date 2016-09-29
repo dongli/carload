@@ -11,8 +11,10 @@ $spacing: 16px;
 @import 'common';
 
 #top-nav-buttons {
-  text-align: center;
-  margin-bottom: $spacing;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
   a:first-child {
     border-top-left-radius: 0;
   }
@@ -37,6 +39,7 @@ $spacing: 16px;
 }
 
 .model-index-panel {
+  margin-top: 50px;
   width: 100%;
   table {
     margin-bottom: 0;
