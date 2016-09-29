@@ -1,8 +1,36 @@
 # Carload
-Short description and motivation.
+This is another dashboard gem for Rails (see [Rails Admin], [ActiveAdmin] and [Administrate]). Carload tries to reduce the typing when implement a dashboard, but it also allow developer to realize any page view if they like.
+
+[Rails Admin]: https://github.com/sferik/rails_admin
+[ActiveAdmin]: http://activeadmin.info/
+[Administrate]: https://github.com/thoughtbot/administrate
 
 ## Usage
-- Run `rails g carload:install` to mount engine routes and add require statement.
+- Run `rails g carload:install` to mount engine routes, add require statement and add initializer.
+
+You can edit the initializer `config/initializers/carload.rb` for example:
+
+```ruby
+Carload.setup do |config|
+  # Specify which authentication solution is used. Currently, we only support Devise.
+  config.auth_solution = :devise
+
+  # Set the actions used to discern user's permission to access dashboard.
+  #
+  #   config.dashboard.permits_user.<method> = '...'
+  #
+  # There are four access methods can be configured:
+  #
+  #   index, new, edit, destroy
+  #
+  # Also you can use a special method 'all' to set the default permission.
+  # The permission can also be array, the relation among them is OR.
+  # By doing this, you have full control on the access permission.
+  # TODO: Set the permissions for each data table.
+  config.dashboard.permits_user.all = 'role.admin?'
+end
+```
+
 - Run `rails g carload:dashboard` to generate `app/carload/dashboard.rb`, and edit that file for example:
 
 ```ruby
