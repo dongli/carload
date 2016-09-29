@@ -5,6 +5,8 @@ This is another dashboard gem for Rails (see [Rails Admin], [ActiveAdmin] and [A
 [ActiveAdmin]: http://activeadmin.info/
 [Administrate]: https://github.com/thoughtbot/administrate
 
+DEMO: [https://carload-demo.herokuapp.com/carload/dashboard/](https://carload-demo.herokuapp.com/carload/dashboard/)
+
 ![](http://7xvqi7.com1.z0.glb.clouddn.com/carload.dashboard.snapshot.zh-CN.png)
 
 ## Usage
