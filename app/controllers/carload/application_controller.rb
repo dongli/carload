@@ -5,13 +5,6 @@ module Carload
 
     protect_from_forgery with: :exception
 
-    # For demo only!
-    if Carload.auth_solution == :none
-      def current_user
-        nil
-      end
-    end
-
     private
 
     def rescue_not_authorized_error
