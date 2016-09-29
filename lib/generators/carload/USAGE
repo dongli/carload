@@ -1,8 +1,15 @@
 Description:
-    Generate dashboard class so you can describe your models there.
+    Mount Carload routes.
+
+    Copy initializer and dashboard template files.
 
 Example:
-    rails generate carload:dashboard
+    rails generate carload:install
+
+    This will modify:
+        config/routes.rb
+        config/application.rb
 
     This will create:
+        config/initializers/carload.rb
         app/carload/dashboard.rb

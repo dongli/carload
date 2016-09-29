@@ -18,9 +18,13 @@ require 'carload'
       end
     end
 
-    def add_initializer
+    def copy_initializer
       return if File.exist? 'config/initializers/carload.rb'
       copy_file 'carload.rb', 'config/initializers/carload.rb'
+    end
+
+    def copy_dashboard_file
+      copy_file 'dashboard.rb', 'app/carload/dashboard.rb'
     end
   end
 end
