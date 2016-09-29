@@ -1,7 +1,7 @@
 require_dependency "carload/application_controller"
 
 module Carload
-  class DashboardController < ::DashboardController
+  class DashboardController < ApplicationController
     layout 'carload/application'
     rescue_from ActionView::MissingTemplate, with: :rescue_missing_template
     rescue_from Carload::UnmanagedModelError, with: :rescue_unmanaged_model_error
@@ -12,8 +12,8 @@ module Carload
     def index
       @search = @model_class.search(params[:q])
       @objects = @search.result.page(params[:page])
-      @show_attributes = SHOW_ATTRIBUTES_ON_INDEX[@model_name] + [:created_at, :updated_at]
-      @search_attributes = SEARCH_ATTRIBUTES_ON_INDEX[@model_name]
+      @show_attributes = Dashboard.model(@model_name).index_page[:shows][:attributes] + [:created_at, :updated_at]
+      @search_attributes = Dashboard.model(@model_name).index_page[:searches][:attributes]
       render "dashboard/#{@model_names}/index.html.erb"
     end
 
@@ -57,9 +57,9 @@ module Carload
     private
 
     def set_model
-      @model_names = ( params[:model] || DEFAULT_MODEL ).to_s.pluralize
+      @model_names = ( params[:model] || Dashboard.default_model ).to_s.pluralize
       @model_name = @model_names.singularize.to_sym
-      raise Carload::UnmanagedModelError.new(@model_name) if not MODELS.include? @model_name
+      raise Carload::UnmanagedModelError.new(@model_name) if not Dashboard.models.keys.include? @model_name
       @model_class = @model_name.to_s.classify.constantize
     end
 
@@ -68,7 +68,7 @@ module Carload
     end
 
     def model_params
-      params.require(@model_name).permit(PERMITTED_ATTRIBUTES[@model_name])
+      params.require(@model_name).permit(Dashboard.model(@model_name).attributes[:permitted])
     end
 
     def rescue_missing_template exception

@@ -1,11 +1,3 @@
-# Carload
-Short description and motivation.
-
-## Usage
-- Run `rails g carload:install` to mount engine routes and add require statement.
-- Run `rails g carload:dashboard` to generate `app/carload/dashboard.rb`, and edit that file for example:
-
-```ruby
 # Dashboard class is used to tell Carload what models are needed to administrated,
 # which attributes are shown, etc.
 
@@ -43,51 +35,3 @@ class Dashboard < Carload::Dashboard
   end
   associate :item => :product, choose_by: :name
 end
-```
-
-- Make sure you have the necessary I18n translation files, for example:
-
-```yaml
-en:
-  activerecord:
-    models:
-      item: Item
-    attributes:
-      item:
-        name: Name
-        product:
-          name: Product Name
-```
-```yaml
-en:
-  activerecord:
-    models:
-      product: Product
-    attributes:
-      product:
-        name: Name
-```
-- Access the brand new dashboard in '<Your URL>/carload'.
-
-## Installation
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'carload'
-```
-
-And then execute:
-```bash
-$ bundle
-```
-
-Or install it yourself as:
-```bash
-$ gem install carload
-```
-
-## Contributing
-Contribution directions go here.
-
-## License
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).

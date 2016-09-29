@@ -1,0 +1,8 @@
+Description:
+    Generate dashboard class so you can describe your models there.
+
+Example:
+    rails generate carload:dashboard
+
+    This will create:
+        app/carload/dashboard.rb

@@ -3,6 +3,7 @@ Gem.loaded_specs['carload'].dependencies.each do |dependency|
   require dependency.name
 end
 
+require 'carload/dashboard'
 require 'carload/engine'
 require 'carload/exceptions'
 
