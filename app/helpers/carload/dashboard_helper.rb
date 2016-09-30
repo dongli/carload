@@ -25,7 +25,7 @@ module Carload
       when Symbol
         object.send attribute
       when String
-        eval "object.#{attribute}"
+        eval "object.#{attribute.gsub('.', '&.')}"
       end
     end
   end

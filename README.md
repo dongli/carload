@@ -9,6 +9,12 @@ DEMO: [https://carload-demo.herokuapp.com/carload/dashboard/](https://carload-de
 
 ![](https://ruby-china-files.b0.upaiyun.com/photo/2016/f62758b167e6d1bc1f55459ad2d53dcd.png!large)
 
+Carload tries to handle errors gracely:
+
+![](https://ruby-china-files.b0.upaiyun.com/photo/2016/bf1c27a50c9987f7bfa2fb3c909d7801.png!large)
+
+![](https://ruby-china-files.b0.upaiyun.com/photo/2016/9afad7d8b2b747c9730db6aeb4ddd288.png!large)
+
 Image file upload is also supported with some assumption.
 
 ![](https://ruby-china-files.b0.upaiyun.com/photo/2016/d9fc7b42fdcd1a7700faa26a47e037c1.png!large)
