@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    carload (0.2.0)
+    carload (0.2.1)
       bootstrap-sass (~> 3.3)
       font-awesome-rails (~> 4.6)
       jquery-rails (~> 4.2)
@@ -182,7 +182,7 @@ GEM
       thread_safe (~> 0.1)
     uglifier (3.0.2)
       execjs (>= 0.3.0, < 3)
-    upload-image (0.1.4)
+    upload-image (0.1.5)
       carrierwave (~> 0.11)
       jquery-rails (~> 4.1)
       mini_magick (~> 4.5)
