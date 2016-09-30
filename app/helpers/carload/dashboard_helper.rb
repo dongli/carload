@@ -4,7 +4,15 @@ module Carload
       if column.type == :integer and attribute_name =~ /_id/
         associated_model = attribute_name.sub('_id', '')
         label_attribute = Dashboard.model(model_name).associated_models[associated_model.to_sym]
-        form.association associated_model, label_method: label_attribute, label: t("activerecord.models.#{associated_model}")
+        form.association associated_model,
+          label_method: label_attribute,
+          label: t("activerecord.models.#{associated_model}"),
+          input_html: {
+            class: 'use-select2',
+            data: {
+              placeholder: t('carload.placeholder.select', thing: t("activerecord.attributes.#{associated_model}.#{label_attribute}"))
+            }
+          }
       else
         form.input attribute_name
       end

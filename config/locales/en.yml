@@ -8,6 +8,9 @@ en:
       back_to_root: Back to Root
       search: Search
 
+    placeholder:
+      select: Select %{thing}
+
     error:
       title:
         dashboard: Encounter web operation error!

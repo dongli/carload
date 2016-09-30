@@ -8,6 +8,8 @@ zh-CN:
       back_to_root: 返回应用
       search: 搜索
 
+    placeholder:
+      select: 请选择%{thing}
 
     error:
       title:

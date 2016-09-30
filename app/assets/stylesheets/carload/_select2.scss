@@ -1,0 +1,13 @@
+.select2-selection, .select2-selection__arrow {
+  height: 34px !important;
+}
+.select2-selection__rendered {
+  line-height: 34px !important;
+}
+
+.select2-selection {
+  border-color: #ccc !important;
+}
+.select2-results__option--highlighted {
+  background-color: $main-color !important;
+}

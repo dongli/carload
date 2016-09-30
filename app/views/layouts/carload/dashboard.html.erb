@@ -8,7 +8,7 @@
 </head>
 <body>
 
-  <div class='container'>
+  <div id='main-container'>
     <div id='top-nav-buttons' class='center'>
       <div class='btn-group' role='group'>
         <%= link_to t('carload.action.back_to_root'), root_path, class: 'btn btn-default' %>
@@ -19,7 +19,9 @@
       </div>
     </div>
 
-    <%= yield %>
+    <div id='main-content'>
+      <%= yield %>
+    </div>
 
     <footer class='center'>
       <%= raw t('carload.footer.message') %>

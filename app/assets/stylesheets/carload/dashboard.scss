@@ -9,6 +9,7 @@ $spacing: 16px;
 
 @import 'colors';
 @import 'common';
+@import '_select2';
 
 #top-nav-buttons {
   position: fixed;
@@ -38,8 +39,14 @@ $spacing: 16px;
   }
 }
 
+#main-container {
+  width: 100%;
+  #main-content {
+    margin-top: 50px;
+  }
+}
+
 .model-index-panel {
-  margin-top: 50px;
   width: 100%;
   table {
     margin-bottom: 0;
