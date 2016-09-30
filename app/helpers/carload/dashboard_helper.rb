@@ -13,6 +13,8 @@ module Carload
               placeholder: t('carload.placeholder.select', thing: t("activerecord.attributes.#{associated_model}.#{label_attribute}"))
             }
           }
+      elsif needs_upload?(model_name, attribute_name) and image?(attribute_name)
+        upload_image form: form, image_name: attribute_name, width: 150, height: 150
       else
         form.input attribute_name
       end

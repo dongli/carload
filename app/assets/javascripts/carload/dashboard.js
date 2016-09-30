@@ -3,6 +3,7 @@
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require select2
+//= require upload-image
 //= require_tree .
 
 $(document).on('turbolinks:load', function() {

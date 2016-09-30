@@ -5,3 +5,4 @@ zh-CN:
     attributes:
       product:
         name: 名称
+        image: 图片

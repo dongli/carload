@@ -1,7 +1,11 @@
 Description:
-    Mount Carload routes.
+    This generator does the following jobs:
 
-    Copy initializer and dashboard template files.
+    - Mount Carload routes.
+
+    - Add require statement.
+
+    - Copy initializer and dashboard template files.
 
 Example:
     rails generate carload:install

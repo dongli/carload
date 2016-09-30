@@ -17,6 +17,9 @@ module Carload
     if not [:devise, :none].include? @@config[:auth_solution]
       raise UnsupportedError.new("authentication solution #{@@config[:auth_solution]}")
     end
+    if not [:carrierwave].include? @@config[:upload_solution]
+      raise UnsupportedError.new("upload solution #{@@config[:upload_solution]}")
+    end
 
     @@config.each do |key, value|
       define_singleton_method key do

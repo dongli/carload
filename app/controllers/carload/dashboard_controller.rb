@@ -8,6 +8,7 @@ module Carload
 
     before_action :set_model
     before_action :set_object, only: [:edit, :update, :destroy]
+    include Croppable
 
     def index
       authorize :dashboard, :index? unless Carload.auth_solution == :none

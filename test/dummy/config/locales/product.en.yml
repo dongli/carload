@@ -5,3 +5,4 @@ en:
     attributes:
       product:
         name: Name
+        image: Image

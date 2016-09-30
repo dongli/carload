@@ -19,14 +19,14 @@ class Dashboard < Carload::Dashboard
 
   model :product do |spec|
     spec.default = true
-    spec.attributes.permitted = [ :name ]
+    spec.attributes.permitted = [ :name, :image ]
     spec.index_page.shows.attributes = [ :name ]
     spec.index_page.searches.attributes = [
       { name: :name, term: :cont }
     ]
   end
   model :item do |spec|
-    spec.attributes.permitted = [ :name, :product_id ]
+    spec.attributes.permitted = [ :name, :image, :product_id ]
     spec.index_page.shows.attributes = [ :name, 'product.name' ]
     spec.index_page.searches.attributes = [
       { name: :name, term: :cont },
