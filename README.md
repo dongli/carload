@@ -10,7 +10,7 @@ DEMO: [https://carload-demo.herokuapp.com/carload/dashboard/](https://carload-de
 ![](http://7xvqi7.com1.z0.glb.clouddn.com/carload.dashboard.snapshot.zh-CN.png)
 
 ## Usage
-- Run `rails g carload:install` to mount engine routes, add require statement and add initializer.
+- Run `rails g carload:install` to mount engine routes, add require statement, initializer, and `Dashboard` class file.
 
 You can edit the initializer `config/initializers/carload.rb` for example:
 
@@ -35,7 +35,7 @@ Carload.setup do |config|
 end
 ```
 
-- Run `rails g carload:dashboard` to generate `app/carload/dashboard.rb`, and edit that file for example:
+Edit `app/carload/dashboard.rb` to adapt for your needs, for example:
 
 ```ruby
 # Dashboard class is used to tell Carload what models are needed to administrated,
@@ -118,8 +118,8 @@ Or install it yourself as:
 $ gem install carload
 ```
 
-## Contributing
-Contribution directions go here.
+## TODO List
+- Support upload file (using `carrierwave`)
 
 ## License
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
