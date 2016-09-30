@@ -7,7 +7,11 @@ This is another dashboard gem for Rails (see [Rails Admin], [ActiveAdmin] and [A
 
 DEMO: [https://carload-demo.herokuapp.com/carload/dashboard/](https://carload-demo.herokuapp.com/carload/dashboard/)
 
-![](http://7xvqi7.com1.z0.glb.clouddn.com/carload.dashboard.snapshot.zh-CN.png)
+![](https://ruby-china-files.b0.upaiyun.com/photo/2016/f62758b167e6d1bc1f55459ad2d53dcd.png!large)
+
+Image file upload is also supported with some assumption.
+
+![](https://ruby-china-files.b0.upaiyun.com/photo/2016/d9fc7b42fdcd1a7700faa26a47e037c1.png!large)
 
 ## Usage
 - Run `rails g carload:install` to mount engine routes, add require statement, initializer, and `Dashboard` class file.
@@ -117,9 +121,6 @@ Or install it yourself as:
 ```bash
 $ gem install carload
 ```
-
-## TODO List
-- Support upload file (using `carrierwave`)
 
 ## License
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
