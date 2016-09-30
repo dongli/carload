@@ -41,6 +41,8 @@ $spacing: 16px;
 
 #main-container {
   width: 100%;
+  padding-left: $spacing;
+  padding-right: $spacing;
   #main-content {
     margin-top: 50px;
   }
