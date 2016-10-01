@@ -182,7 +182,7 @@ GEM
       thread_safe (~> 0.1)
     uglifier (3.0.2)
       execjs (>= 0.3.0, < 3)
-    upload-image (0.1.5)
+    upload-image (0.1.7)
       carrierwave (~> 0.11)
       jquery-rails (~> 4.1)
       mini_magick (~> 4.5)
