@@ -11,7 +11,7 @@ module Carload
     include Croppable
 
     def index
-      authorize :dashboard, :index? unless Carload.auth_solution == :none
+      authorize :carload_dashboard, :index? unless Carload.auth_solution == :none
       @search = @model_class.search(params[:q])
       @objects = @search.result.page(params[:page])
       @show_attributes = Dashboard.model(@model_name).index_page[:shows][:attributes] + [:created_at, :updated_at]
@@ -20,16 +20,16 @@ module Carload
     end
 
     def new
-      authorize :dashboard, :new? unless Carload.auth_solution == :none
+      authorize :carload_dashboard, :new? unless Carload.auth_solution == :none
       @object = @model_class.new
     end
 
     def edit
-      authorize :dashboard, :edit? unless Carload.auth_solution == :none
+      authorize :carload_dashboard, :edit? unless Carload.auth_solution == :none
     end
 
     def create
-      authorize :dashboard, :create? unless Carload.auth_solution == :none
+      authorize :carload_dashboard, :create? unless Carload.auth_solution == :none
       @object = @model_class.create model_params
       if @object.save
         redirect_to action: :index, model: @model_names # TODO: To show page.
@@ -39,7 +39,7 @@ module Carload
     end
 
     def update
-      authorize :dashboard, :update? unless Carload.auth_solution == :none
+      authorize :carload_dashboard, :update? unless Carload.auth_solution == :none
       if @object.update model_params
         redirect_to action: :index, model: @model_names # TODO: To show page.
       else
@@ -48,7 +48,7 @@ module Carload
     end
 
     def destroy
-      authorize :dashboard, :destroy? unless Carload.auth_solution == :none
+      authorize :carload_dashboard, :destroy? unless Carload.auth_solution == :none
       @object.destroy
       redirect_to action: :index, model: @model_names
     end

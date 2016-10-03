@@ -1,4 +1,4 @@
-class DashboardPolicy < Struct.new(:user, :dashboard)
+class CarloadDashboardPolicy < Struct.new(:user, :dashboard)
   [:index, :new, :edit, :destroy].each do |action|
     define_method :"#{action}?" do
       return true if Carload.auth_solution == :none
