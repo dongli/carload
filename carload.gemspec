@@ -29,4 +29,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'pundit', '~> 1.1'
   s.add_dependency 'select2-rails', '~> 4.0'
   s.add_dependency 'upload-image', '~> 0.1'
+  s.add_dependency 'highline', '~> 1.7'
 end

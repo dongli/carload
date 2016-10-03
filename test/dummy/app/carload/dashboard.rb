@@ -2,7 +2,7 @@
 # which attributes are shown, etc.
 
 class Dashboard < Carload::Dashboard
-  # There two DSL block types:
+  # There are two DSL block types:
   #
   #   model :<model_name> do |spec|
   #     # Whether model should be displayed when URL does not specify one
@@ -16,22 +16,23 @@ class Dashboard < Carload::Dashboard
   #   end
   #
   #   associate :<model_name_a> => :<model_name_b>, choose_by: :<attribute_in_model_b>
-
-  model :product do |spec|
-    spec.default = true
-    spec.attributes.permitted = [ :name, :image ]
-    spec.index_page.shows.attributes = [ :name ]
-    spec.index_page.searches.attributes = [
-      { name: :name, term: :cont }
-    ]
-  end
   model :item do |spec|
-    spec.attributes.permitted = [ :name, :image, :product_id ]
-    spec.index_page.shows.attributes = [ :name, 'product.name' ]
-    spec.index_page.searches.attributes = [
-      { name: :name, term: :cont },
-      { name: 'product.name', term: :cont }
-    ]
+    spec.default = false
+    spec.attributes.permitted = ["name", "product_id", "image"]
+    spec.index_page.shows.attributes = ["name", "product.name", "image"]
+    spec.index_page.searches.attributes = [{:name=>"name", :term=>:cont}, {:name=>"image", :term=>:cont}, {:model=>"product.name", :term=>:cont}]
   end
   associate :item => :product, choose_by: :name
+  model :user do |spec|
+    spec.default = false
+    spec.attributes.permitted = ["email", "role"]
+    spec.index_page.shows.attributes = ["email", "role"]
+    spec.index_page.searches.attributes = [{:name=>"email", :term=>:cont}, {:name=>"role", :term=>:cont}]
+  end
+  model :product do |spec|
+    spec.default = false
+    spec.attributes.permitted = ["name", "image"]
+    spec.index_page.shows.attributes = ["name", "image"]
+    spec.index_page.searches.attributes = [{:name=>"name", :term=>:cont}, {:name=>"image", :term=>:cont}]
+  end
 end

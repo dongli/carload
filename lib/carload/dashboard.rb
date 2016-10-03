@@ -17,7 +17,7 @@ module Carload
       def model name, &block
         if block_given?
           @@models ||= {}
-          spec = ModelSpec.new
+          spec = @@models[name] || ModelSpec.new
           yield spec
           @@models[name] = spec
         else
@@ -28,6 +28,8 @@ module Carload
       def associate args
         model_a = args.keys.first
         model_b = args.values.first
+        @@models[model_a] ||= ModelSpec.new
+        @@models[model_b] ||= ModelSpec.new
         @@models[model_a].associated_models[model_b] = args[:choose_by]
         @@models[model_b].associated_models[model_a] = nil
       end
@@ -41,6 +43,7 @@ module Carload
         @@models.each do |name, spec|
           return @@default_model = name if spec.default
         end
+        @@default_model = @@models.keys.first
       end
     end
   end
