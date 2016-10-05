@@ -11,10 +11,10 @@ Carload.setup do |config|
   config.page.button_color = nil
   config.page.button_text_color = nil
 
-  # Specify which authentication solution is used. Currently, we only support Devise.
+  # Set which authentication solution is used. Currently, we only support Devise.
   config.auth_solution = :devise
 
-  # Specify which file upload solution is used. Currently, we only support Carrierwave.
+  # Set which file upload solution is used. Currently, we only support Carrierwave.
   config.upload_solution = :carrierwave
 
   # Set the actions used to discern user's permission to access dashboard.
