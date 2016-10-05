@@ -3,6 +3,7 @@ class Item < ApplicationRecord
   include Croppable
 
   belongs_to :product
+  has_one :package, as: :packagable
 
   validates :name, uniqueness: true, presence: true
 end

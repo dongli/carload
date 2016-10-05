@@ -3,4 +3,5 @@ class Product < ApplicationRecord
   include Croppable
 
   has_many :items
+  has_one :package, as: :packagable
 end

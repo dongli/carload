@@ -4,6 +4,7 @@
 //= require upload-image
 
 $spacing: 16px;
+$half-spacing: 8px;
 
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
@@ -42,17 +43,30 @@ $spacing: 16px;
 
 #main-container {
   width: 100%;
-  padding-left: $spacing;
-  padding-right: $spacing;
   #main-content {
     margin-top: 50px;
+    padding-left: $spacing;
+    padding-right: $spacing;
   }
 }
 
 .model-index-panel {
   width: 100%;
+  .panel-body {
+    overflow: scroll;
+    padding-left: 0;
+    padding-right: 0;
+  }
   table {
     margin-bottom: 0;
+    table-layout: fixed;
+    width: 100%;
+    td {
+      overflow: scroll;
+    }
+    th:last-child {
+      width: 50px;
+    }
   }
 }
 .model-new-panel, .model-edit-panel {

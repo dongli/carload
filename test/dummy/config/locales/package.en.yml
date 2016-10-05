@@ -1,0 +1,10 @@
+en:
+  activerecord:
+    models:
+      package: Package
+    attributes:
+      package:
+        name: Name
+        packagable_type: Package Content Type
+        packagable:
+          name: Package Content Name

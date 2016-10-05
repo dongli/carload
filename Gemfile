@@ -11,7 +11,11 @@ gemspec
 # your gem to rubygems.org.
 
 # To use a debugger
-gem 'byebug', group: [:development, :test]
+group :development, :test do
+  gem 'byebug'
+  gem 'web-console'
+  gem 'listen', '~> 3.0.5'
+end
 gem 'sqlite3'
 gem 'devise', '~> 4.1.1'
 gem 'enumerize'

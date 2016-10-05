@@ -11,3 +11,7 @@
 .select2-results__option--highlighted {
   background-color: $main-color !important;
 }
+
+.select2-container {
+  min-width: 174px;
+}

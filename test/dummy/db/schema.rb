@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160930033133) do
+ActiveRecord::Schema.define(version: 20161003234221) do
 
   create_table "items", force: :cascade do |t|
     t.string   "name"
@@ -19,6 +19,15 @@ ActiveRecord::Schema.define(version: 20160930033133) do
     t.datetime "updated_at", null: false
     t.string   "image"
     t.index ["product_id"], name: "index_items_on_product_id"
+  end
+
+  create_table "packages", force: :cascade do |t|
+    t.string   "name"
+    t.string   "packagable_type"
+    t.integer  "packagable_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["packagable_type", "packagable_id"], name: "index_packages_on_packagable_type_and_packagable_id"
   end
 
   create_table "products", force: :cascade do |t|

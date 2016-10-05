@@ -12,6 +12,23 @@ module Carload
         'last_sign_in_ip'
       ].freeze
 
+      def self.foreign_key? attribute
+        attribute =~ /_id$/
+      end
+
+      def foreign_key? attribute
+        ModelSpec.foreign_key? attribute
+      end
+
+      def self.polymorphic? model_class, attribute
+        return false unless foreign_key? attribute
+        model_class.column_names.include? "#{attribute.to_s.gsub('_id', '')}_type"
+      end
+
+      def polymorphic? model_class, attribute
+        ModelSpec.polymorphic? model_class, attribute
+      end
+
       def initialize model_class = nil
         @default = false
         @attributes = ExtendedHash.new
@@ -24,9 +41,13 @@ module Carload
           @attributes[:permitted].each do |attribute|
             @index_page[:shows][:attributes] ||= []
             @index_page[:searches][:attributes] ||= []
-            if attribute =~ /_id$/
+            if foreign_key? attribute
               associated_model = attribute.gsub('_id', '')
-              @associated_models[associated_model] = { choose_by: nil } # Wait for setting.
+              @associated_models[associated_model] = {
+                choose_by: nil, # Wait for setting.
+                polymorphic: polymorphic?(model_class, attribute),
+                model: model_class.name.underscore.to_sym
+              }
             else
               @index_page[:shows][:attributes] << attribute
               @index_page[:searches][:attributes] << { name: attribute.to_sym, term: :cont }
@@ -40,14 +61,42 @@ module Carload
         not @index_page[:searches][:attributes] == spec.index_page[:searches][:attributes]
       end
 
-      def revise!
+      def revise_stage_1!
+        # Handle polymorphic associated models if necessary.
+        @associated_models.each do |associated_model, options|
+          next if not options or not options[:polymorphic]
+          ActiveRecord::Base.descendants.each do |model|
+            next if model.name == 'ApplicationRecord'
+            if not model.reflect_on_all_associations.map(&:name).select { |x| x.to_s =~ /\b(#{options[:model]}|#{options[:model].to_s.pluralize})\b/ }.empty?
+              options[:available_models] ||= []
+              options[:available_models] << model.name.underscore
+              if not options[:common_attributes]
+                options[:common_attributes] = model.column_names - SkippedAttributes
+              else
+                options[:common_attributes] = options[:common_attributes] & model.column_names
+              end
+            end
+          end
+        end
+      end
+
+      def revise_stage_2!
         # Handle associated models if necessary.
         @associated_models.each do |associated_model, options|
           next if not options
-          @index_page[:searches][:attributes] << {
-            name: "#{associated_model}.#{options[:choose_by]}",
-            term: :cont
-          }
+          if options[:polymorphic]
+            # There should be a <associated_model>_type already.
+            @index_page[:shows][:attributes] << "#{associated_model}.#{options[:choose_by]}"
+            @index_page[:searches][:attributes].each do |attribute|
+              next unless attribute[:name] == :"#{associated_model}_type"
+              attribute[:options] = options[:available_models]
+            end
+          else
+            @index_page[:searches][:attributes] << {
+              name: "#{associated_model}.#{options[:choose_by]}",
+              term: :cont
+            }
+          end
         end
       end
     end
@@ -68,10 +117,13 @@ module Carload
       def associate options
         model_a = options.keys.first
         model_b = options.values.first
+        options.shift
         @@models[model_a] ||= ModelSpec.new
-        @@models[model_b] ||= ModelSpec.new
-        @@models[model_a].associated_models[model_b] = { choose_by: options[:choose_by] }
-        @@models[model_b].associated_models[model_a] = nil
+        @@models[model_a].associated_models[model_b] = options
+        unless options[:polymorphic]
+          @@models[model_b] ||= ModelSpec.new
+          @@models[model_b].associated_models[model_a] = nil
+        end
       end
 
       def models

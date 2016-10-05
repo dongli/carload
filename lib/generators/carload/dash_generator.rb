@@ -14,20 +14,21 @@ module Carload
       end
       spec = model_specs[model]
       if not spec.associated_models.empty?
+        spec.revise_stage_1!
         cli = HighLine.new
         cli.say "\nModel #{model} has associated with other models."
         spec.associated_models.each do |associated_model, options|
-          next unless model_specs[associated_model]
           spec.associated_models[associated_model][:choose_by] = cli.choose do |menu|
             menu.prompt = "Choose the attribute of model #{associated_model} for choosing in #{model}? "
-            model_specs[associated_model].attributes.permitted.each do |attribute|
+            attributes = options[:polymorphic] ? options[:common_attributes] : model_specs[associated_model].attributes.permitted
+            attributes.each do |attribute|
               next if attribute =~ /_id$/
               menu.choice attribute.to_sym
             end
           end
         end
+        spec.revise_stage_2!
       end
-      spec.revise!
       # Check if model exists in dashboard file, but it may be changed.
       begin
         load 'app/carload/dashboard.rb'

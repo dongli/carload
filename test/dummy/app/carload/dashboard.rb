@@ -30,4 +30,11 @@ class Dashboard < Carload::Dashboard
     spec.index_page.searches.attributes = [{:name=>:name, :term=>:cont}, {:name=>:image, :term=>:cont}, {:name=>"product.name", :term=>:cont}]
   end
   associate({:item=>:product, :choose_by=>:name})
+  model :package do |spec|
+    spec.default = false
+    spec.attributes.permitted = ["name", "packagable_type", "packagable_id"]
+    spec.index_page.shows.attributes = ["name", "packagable_type", "packagable.name"]
+    spec.index_page.searches.attributes = [{:name=>:name, :term=>:cont}, {:name=>:packagable_type, :term=>:cont, :options=>["item", "product"]}]
+  end
+  associate({:package=>:packagable, :choose_by=>:name, :polymorphic=>true, :model=>:package, :available_models=>["item", "product"], :common_attributes=>["name", "image"]})
 end
