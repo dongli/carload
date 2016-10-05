@@ -87,6 +87,8 @@ class Dashboard < Carload::Dashboard
 end
 ```
 
+- You can run another generator `rails g carload:dash <model_name>` to generate the above content automatically (it may ask you some question).
+
 - Make sure you have the necessary I18n translation files, for example:
 
 ```yaml
