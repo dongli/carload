@@ -25,11 +25,13 @@ $half-spacing: 8px;
     border-top-right-radius: 0;
   }
   a {
+    color: $text-color;
     border-color: $main-color;
   }
   a:hover {
     background-color: lighten($main-color, 20%);
     border-color: lighten($main-color, 20%);
+    color: white;
   }
   a.active {
     background-color: $main-color;

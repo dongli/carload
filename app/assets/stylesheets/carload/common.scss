@@ -51,19 +51,21 @@ th {
 }
 
 .btn-primary {
-  color: #fff;
+  color: $button-text-color;
   text-shadow: 0 -1px 0 rgba(0,0,0,0.15);
-  background-color: #60b044;
-  background-image: -webkit-linear-gradient(#8add6d, #60b044);
-  background-image: linear-gradient(#8add6d, #60b044);
-  border-color: #5ca941;
+  background-color: $button-color-1;
+  background-image: -webkit-linear-gradient($button-color-2, $button-color-1);
+  background-image: linear-gradient($button-color-2, $button-color-1);
+  border: none;
+  height: 34px;
 }
 .btn-primary:hover {
-  color: #fff;
-  background-color: #569e3d;
-  background-image: -webkit-linear-gradient(#79d858, #569e3d);
-  background-image: linear-gradient(#79d858, #569e3d);
-  border-color: #4a993e;
+  color: lighten($button-text-color, 20%);
+  background-color: lighten($button-color-1, 20%);
+  background-image: -webkit-linear-gradient(lighten($button-color-2, 20%), lighten($button-color-1, 20%));
+  background-image: linear-gradient(lighten($button-color-2, 20%), lighten($button-color-1, 20%));
+  border: none;
+  height: 34px;
 }
 
 .form-control:hover {

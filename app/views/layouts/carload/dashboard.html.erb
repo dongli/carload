@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Carload</title>
+  <title><%= Carload.page.title || 'Carload' %></title>
   <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
   <%= stylesheet_link_tag    'carload/dashboard', media: 'all' %>
   <%= javascript_include_tag 'carload/dashboard' %>
@@ -25,7 +25,7 @@
     </div>
 
     <footer class='center'>
-      <%= raw t('carload.footer.message') %>
+      <%= raw Carload.page.footer || t('carload.footer.message') %>
     </footer>
   </div>
 

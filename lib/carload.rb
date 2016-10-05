@@ -11,6 +11,7 @@ require 'carload/exceptions'
 module Carload
   def self.setup &block
     @@config = ExtendedHash.new
+    @@config[:page] = ExtendedHash.new
     @@config[:dashboard] = ExtendedHash.new
     @@config[:dashboard][:permits_user] = ExtendedHash.new
     yield @@config

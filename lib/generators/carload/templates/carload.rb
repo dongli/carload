@@ -1,4 +1,16 @@
 Carload.setup do |config|
+  # Set the title that will be displayed on the browser tab area.
+  config.page.title = nil
+
+  # Set the footer text that will be displayed on each page.
+  config.page.footer = nil
+
+  # Set the colors of page elements.
+  config.page.main_color = nil
+  config.page.text_color = 'black'
+  config.page.button_color = nil
+  config.page.button_text_color = nil
+
   # Specify which authentication solution is used. Currently, we only support Devise.
   config.auth_solution = :devise
 
