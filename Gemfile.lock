@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    carload (0.2.2)
+    carload (0.3.0)
       bootstrap-sass (~> 3.3)
       font-awesome-rails (~> 4.6)
       highline (~> 1.7)
@@ -58,7 +58,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (7.1.2)
-    autoprefixer-rails (6.5.0.1)
+    autoprefixer-rails (6.5.0.2)
       execjs
     bcrypt (3.1.11)
     bootstrap-sass (3.3.7)

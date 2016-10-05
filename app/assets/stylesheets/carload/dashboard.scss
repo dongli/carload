@@ -64,6 +64,9 @@ $half-spacing: 8px;
     td {
       overflow: scroll;
     }
+    th:first-child, td:first-child {
+      padding-left: $spacing;
+    }
     th:last-child {
       width: 50px;
     }
