@@ -1,7 +1,7 @@
 <%= simple_form_for @object, url: "/carload/dashboard/#{@model_names}/#{@object.id}" do |f| %>
   <% @model_class.columns_hash.each do |name, column| %>
-    <% next if Dashboard::ModelSpec::SkippedAttributes.include? name %>
-    <%= generate_input(f, @model_name, name, column) rescue nil %>
+    <% next if Carload::ModelSpec::SkippedAttributes.include? name %>
+    <%= generate_input(f, @model_name, name) %>
   <% end %>
   <%= f.button :submit, t('carload.action.submit'), class: 'btn btn-primary' %>
 <% end %>

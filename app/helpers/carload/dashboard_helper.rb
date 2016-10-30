@@ -1,16 +1,16 @@
 module Carload
   module DashboardHelper
-    def generate_input form, model_name, attribute_name, column
-      if Dashboard::ModelSpec.foreign_key? attribute_name
+    def generate_input form, model_name, attribute_name
+      if attribute_name =~ /_id$/
         associated_model = attribute_name.gsub(/_id$/, '').to_sym
         options = Dashboard.model(model_name).associated_models[associated_model]
         label_attribute = options[:choose_by]
-        if options[:polymorphic]
+        if options[:polymorphic] and options[:instance_models]
           forms = ''
-          options[:available_models].each_with_index do |real_model, i|
+          options[:instance_models].each_with_index do |real_model, i|
             forms << form.input(attribute_name,
               label: t("activerecord.attributes.#{model_name}.#{real_model}.#{label_attribute}"),
-              collection: real_model.camelize.constantize.all,
+              collection: real_model.to_s.camelize.constantize.all,
               label_method: label_attribute,
               value_method: :id,
               input_html: {
@@ -20,7 +20,7 @@ module Carload
                 }
               },
               wrapper_html: {
-                id: "#{real_model.camelize}-#{label_attribute}"
+                id: "#{real_model.to_s.camelize}-#{label_attribute}"
               }
             )
           end
@@ -53,7 +53,7 @@ module Carload
       elsif attribute_name =~ /_type$/
         associated_model = attribute_name.gsub(/_type$/, '').to_sym
         options = Dashboard.model(model_name).associated_models[associated_model]
-        form.input attribute_name, collection: options[:available_models].map(&:camelize),
+        form.input attribute_name, collection: options[:instance_models].map{ |x| x.to_s.camelize },
           input_html: {
             class: 'use-select2',
             data: {
@@ -69,6 +69,7 @@ module Carload
 
     def generate_search_input form, model_name, attribute
       if attribute[:options]
+        # There are options to select from.
         form.input "#{attribute[:name].to_s.gsub('.', '_')}_#{attribute[:term]}",
           required: false, label: false, collection: attribute[:options],
           input_html: {
@@ -89,7 +90,13 @@ module Carload
       when Symbol
         object.send attribute
       when String
-        eval "object.#{attribute.gsub('.', '&.')}"
+        res = eval "object.#{attribute.gsub('.', '&.')}"
+        case res
+        when String
+          res
+        when Array
+          raw res.map { |x| "<span class='label label-primary'>#{x}</span>" }.join(' ')
+        end
       end
     end
   end

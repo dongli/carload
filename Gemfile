@@ -15,6 +15,7 @@ group :development, :test do
   gem 'byebug'
   gem 'web-console'
   gem 'listen', '~> 3.0.5'
+  gem 'ransack', github: 'dongli/ransack'
 end
 gem 'sqlite3'
 gem 'devise', '~> 4.1.1'

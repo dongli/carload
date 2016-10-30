@@ -8,3 +8,5 @@ en:
         image: Image
         product:
           name: Product Name
+        package:
+          name: Package Name

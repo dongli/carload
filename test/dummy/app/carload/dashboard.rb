@@ -17,24 +17,41 @@ class Dashboard < Carload::Dashboard
   #
   #   associate :<model_name_a> => :<model_name_b>, choose_by: :<attribute_in_model_b>
 
-  model :product do |spec|
+  model :user do |spec|
     spec.default = true
-    spec.attributes.permitted = ["name", "image"]
-    spec.index_page.shows.attributes = ["name", "image"]
-    spec.index_page.searches.attributes = [{:name=>:name, :term=>:cont}, {:name=>:image, :term=>:cont}]
+    spec.attributes.permitted = [:email, :role]
+    spec.index_page.shows.attributes = [:email, :role]
+    spec.index_page.searches.attributes = [{:name=>:email, :term=>:cont}, {:name=>:role, :term=>:cont}]
   end
   model :item do |spec|
     spec.default = false
-    spec.attributes.permitted = ["name", "product_id", "image"]
-    spec.index_page.shows.attributes = ["name", "image"]
-    spec.index_page.searches.attributes = [{:name=>:name, :term=>:cont}, {:name=>:image, :term=>:cont}, {:name=>"product.name", :term=>:cont}]
+    spec.attributes.permitted = [:name, :product_id, :image]
+    spec.index_page.shows.attributes = [:name, :image, "product.name", "package.name"]
+    spec.index_page.searches.attributes = [{:name=>:name, :term=>:cont}, {:name=>:image, :term=>:cont}, {:name=>"product.name", :term=>:cont}, {:name=>"package.name", :term=>:cont}]
   end
   associate({:item=>:product, :choose_by=>:name})
+  associate({:item=>:package, :choose_by=>:name})
+  model :product do |spec|
+    spec.default = false
+    spec.attributes.permitted = [:name, :image, {:item_ids=>[]}, {:inventory_ids=>[]}]
+    spec.index_page.shows.attributes = [:name, :image, "items.pluck(:name)", "package.name", "inventories.pluck(:name)"]
+    spec.index_page.searches.attributes = [{:name=>:name, :term=>:cont}, {:name=>:image, :term=>:cont}, {:name=>"items.name", :term=>:cont}, {:name=>"package.name", :term=>:cont}, {:name=>"inventories.name", :term=>:cont}]
+  end
+  associate({:product=>:item, :choose_by=>:name})
+  associate({:product=>:package, :choose_by=>:name})
+  associate({:product=>:inventory, :choose_by=>:name})
+  model :inventory do |spec|
+    spec.default = false
+    spec.attributes.permitted = [:name, {:product_ids=>[]}]
+    spec.index_page.shows.attributes = [:name, "products.pluck(:name)"]
+    spec.index_page.searches.attributes = [{:name=>:name, :term=>:cont}, {:name=>"products.name", :term=>:cont}]
+  end
+  associate({:inventory=>:product, :choose_by=>:name})
   model :package do |spec|
     spec.default = false
-    spec.attributes.permitted = ["name", "packagable_type", "packagable_id"]
-    spec.index_page.shows.attributes = ["name", "packagable_type", "packagable.name"]
-    spec.index_page.searches.attributes = [{:name=>:name, :term=>:cont}, {:name=>:packagable_type, :term=>:cont, :options=>["item", "product"]}]
+    spec.attributes.permitted = [:name, :packagable_type, :packagable_id]
+    spec.index_page.shows.attributes = [:name, :packagable_type, "packagable.name"]
+    spec.index_page.searches.attributes = [{:name=>:name, :term=>:cont}, {:name=>:packagable_type, :term=>:cont}, {:name=>"packagable.name", :term=>:cont}]
   end
-  associate({:package=>:packagable, :choose_by=>:name, :polymorphic=>true, :model=>:package, :available_models=>["item", "product"], :common_attributes=>["name", "image"]})
+  associate({:package=>:packagable, :choose_by=>:name})
 end

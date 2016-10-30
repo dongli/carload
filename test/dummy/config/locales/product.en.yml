@@ -6,3 +6,5 @@ en:
       product:
         name: Name
         image: Image
+        package:
+          name: Package Name

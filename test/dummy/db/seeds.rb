@@ -1,1 +1,6 @@
-User.create(email: 'foo@bar.com', password: '12345678', password_confirmation: '12345678')
+User.create(email: 'dongli.init@gmail.com', password: '12345678', password_confirmation: '12345678')
+Product.create(name: 'Apple')
+Item.create(name: 'Apple core', product_id: 1)
+Inventory.create(name: 'Fruit')
+ProductInventoryJoin.create(product_id: 1, inventory_id: 1)
+Package.create(name: 'Backet', packagable_type: 'Product', packagable_id: 1)

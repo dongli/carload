@@ -4,4 +4,6 @@ class Product < ApplicationRecord
 
   has_many :items
   has_one :package, as: :packagable
+  has_many :product_inventory_joins
+  has_many :inventories, through: :product_inventory_joins
 end

@@ -10,7 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161003234221) do
+ActiveRecord::Schema.define(version: 20161005105358) do
+
+  create_table "inventories", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "items", force: :cascade do |t|
     t.string   "name"
@@ -28,6 +34,15 @@ ActiveRecord::Schema.define(version: 20161003234221) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.index ["packagable_type", "packagable_id"], name: "index_packages_on_packagable_type_and_packagable_id"
+  end
+
+  create_table "product_inventory_joins", force: :cascade do |t|
+    t.integer  "product_id"
+    t.integer  "inventory_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["inventory_id"], name: "index_product_inventory_joins_on_inventory_id"
+    t.index ["product_id"], name: "index_product_inventory_joins_on_product_id"
   end
 
   create_table "products", force: :cascade do |t|

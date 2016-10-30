@@ -15,3 +15,18 @@
 .select2-container {
   min-width: 174px;
 }
+
+.select2-search__field {
+  line-height: 22px;
+}
+.select2-search__field:focus {
+  box-shadow: none !important;
+}
+.select2-selection__choice {
+  line-height: 22px;
+  background-color: $main-color !important;
+  color: white;
+}
+.select2-selection__choice__remove {
+  color: white !important;
+}

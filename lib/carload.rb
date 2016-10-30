@@ -4,12 +4,22 @@ Gem.loaded_specs['carload'].dependencies.each do |dependency|
 end
 
 require 'carload/extended_hash'
+require 'carload/association_pipelines'
+require 'carload/model_spec'
 require 'carload/dashboard'
 require 'carload/engine'
 require 'carload/exceptions'
 
 module Carload
   def self.setup &block
+    # Fill up associations of models.
+    Dashboard.models.each do |name, spec|
+      spec.klass = name.to_s.camelize.constantize
+      spec.klass.reflect_on_all_associations.each do |association|
+        spec.handle_association association
+      end
+    end
+    # Read in configuration.
     @@config = ExtendedHash.new
     @@config[:page] = ExtendedHash.new
     @@config[:dashboard] = ExtendedHash.new
