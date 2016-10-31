@@ -13,7 +13,7 @@ require 'carload/exceptions'
 module Carload
   def self.setup &block
     # Fill up associations of models.
-    if not ARGV.first =~ /db/
+    if ARGV.first =~ /s|serve|c|console|db|dbconsole/
       Dashboard.models.each do |name, spec|
         spec.klass = name.to_s.camelize.constantize
         spec.klass.reflect_on_all_associations.each do |association|
