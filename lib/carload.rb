@@ -13,13 +13,14 @@ require 'carload/exceptions'
 module Carload
   def self.setup &block
     # Fill up associations of models.
-    if ARGV.first =~ /s|serve|c|console|db|dbconsole/
+    begin
       Dashboard.models.each do |name, spec|
         spec.klass = name.to_s.camelize.constantize
         spec.klass.reflect_on_all_associations.each do |association|
           spec.handle_association association
         end
       end
+    rescue
     end
     # Read in configuration.
     @@config = ExtendedHash.new
