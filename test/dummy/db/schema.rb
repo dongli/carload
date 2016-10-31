@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161005105358) do
+ActiveRecord::Schema.define(version: 20161030074822) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+  enable_extension "zhparser"
 
   create_table "inventories", force: :cascade do |t|
     t.string   "name"
@@ -24,7 +28,7 @@ ActiveRecord::Schema.define(version: 20161005105358) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "image"
-    t.index ["product_id"], name: "index_items_on_product_id"
+    t.index ["product_id"], name: "index_items_on_product_id", using: :btree
   end
 
   create_table "packages", force: :cascade do |t|
@@ -33,7 +37,7 @@ ActiveRecord::Schema.define(version: 20161005105358) do
     t.integer  "packagable_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.index ["packagable_type", "packagable_id"], name: "index_packages_on_packagable_type_and_packagable_id"
+    t.index ["packagable_type", "packagable_id"], name: "index_packages_on_packagable_type_and_packagable_id", using: :btree
   end
 
   create_table "product_inventory_joins", force: :cascade do |t|
@@ -41,8 +45,8 @@ ActiveRecord::Schema.define(version: 20161005105358) do
     t.integer  "inventory_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.index ["inventory_id"], name: "index_product_inventory_joins_on_inventory_id"
-    t.index ["product_id"], name: "index_product_inventory_joins_on_product_id"
+    t.index ["inventory_id"], name: "index_product_inventory_joins_on_inventory_id", using: :btree
+    t.index ["product_id"], name: "index_product_inventory_joins_on_product_id", using: :btree
   end
 
   create_table "products", force: :cascade do |t|
@@ -66,8 +70,8 @@ ActiveRecord::Schema.define(version: 20161005105358) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "role"
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
 end

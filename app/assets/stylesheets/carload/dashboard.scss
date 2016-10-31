@@ -83,22 +83,19 @@ $half-spacing: 8px;
 #dashboard-index-buttons {
   display: inline-block;
   margin-right: $spacing;
-}
-#new_q {
-  display: inline-block;
+  line-height: 34px;
 }
 
-.search-fields {
-  display: inline-flex;
-  .form-group {
-    display: inline-flex;
-    margin-right: 5px;
-    margin-bottom: 0;
+#search-input {
+  position: relative;
+  .icon {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    color: #ccc;
   }
-  .form-group:last-child {
-    margin-right: 0;
+  input {
+    width: 100%;
+    padding-left: 30px;
   }
-}
-.search-buttons {
-  display: inline-flex;
 }

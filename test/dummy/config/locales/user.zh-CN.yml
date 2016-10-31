@@ -1,0 +1,14 @@
+zh-CN:
+  activerecord:
+    models:
+      user: 用户
+    attributes:
+      user:
+        email: 邮箱
+        role: 角色
+
+  enumerize:
+    user:
+      role:
+        admin: 管理员
+        user: 普通用户

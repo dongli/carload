@@ -1,59 +1,45 @@
 module Carload
   module DashboardHelper
-    def generate_input form, model_name, attribute_name
-      if attribute_name =~ /_id$/
+    def generate_input form, model_name, attribute_name, options = {}
+      if options[:polymorphic]
+        form.input attribute_name,
+          collection: @model_class.send(attribute_name.to_s.pluralize),
+          selected: options[:value],
+          input_html: { class: 'use-select2' }
+      elsif attribute_name =~ /_id$/
         associated_model = attribute_name.gsub(/_id$/, '').to_sym
-        options = Dashboard.model(model_name).associated_models[associated_model]
-        label_attribute = options[:choose_by]
-        if options[:polymorphic] and options[:instance_models]
-          forms = ''
-          options[:instance_models].each_with_index do |real_model, i|
-            forms << form.input(attribute_name,
-              label: t("activerecord.attributes.#{model_name}.#{real_model}.#{label_attribute}"),
-              collection: real_model.to_s.camelize.constantize.all,
-              label_method: label_attribute,
-              value_method: :id,
-              input_html: {
-                class: 'use-select2',
-                data: {
-                  placeholder: t('carload.placeholder.select', thing: t("activerecord.attributes.#{real_model}.#{label_attribute}"))
-                }
-              },
-              wrapper_html: {
-                id: "#{real_model.to_s.camelize}-#{label_attribute}"
-              }
-            )
-          end
-          # Add JavaScript to select which real model to work on.
-          forms << <<-EOT
-            <script>
-              $('.#{model_name}_#{associated_model}_id').hide()
-              if ($('##{model_name}_#{associated_model}_type').val() != '') {
-                $('#' + $('##{model_name}_#{associated_model}_type').val() + '-#{label_attribute}').show()
-              }
-              $('##{model_name}_#{associated_model}_type').change(function() {
-                $('.#{model_name}_#{associated_model}_id').hide()
-                $('#' + $(this).val() + '-#{label_attribute}').show()
-                $('.package_packagable_id > .select2-container').css('width', '100%')
-              })
-            </script>
-          EOT
-          raw forms.html_safe
-        else
-          form.association associated_model,
-            label_method: label_attribute,
-            label: t("activerecord.models.#{associated_model}"),
-            input_html: {
-              class: 'use-select2',
-              data: {
-                placeholder: t('carload.placeholder.select', thing: t("activerecord.attributes.#{associated_model}.#{label_attribute}"))
-              }
+        association_specs = Dashboard.model(model_name).associated_models[associated_model]
+        label_attribute = association_specs[:choose_by]
+        form.association associated_model,
+          label_method: label_attribute,
+          label: t("activerecord.models.#{associated_model}"),
+          input_html: {
+            class: 'use-select2',
+            data: {
+              placeholder: t('carload.placeholder.select', thing: t("activerecord.attributes.#{associated_model}.#{label_attribute}"))
             }
-        end
+          }
+      elsif attribute_name =~ /_ids$/
+        # Mandle many-to-many association.
+        associated_model = attribute_name.gsub(/_ids$/, '').to_sym
+        association_specs = Dashboard.model(model_name).associated_models[associated_model]
+        label_attribute = association_specs[:choose_by]
+        form.input attribute_name,
+          label: t("activerecord.attributes.#{associated_model}.#{label_attribute}") + " (#{t("activerecord.models.#{associated_model}")})",
+          collection: associated_model.to_s.camelize.constantize.all,
+          label_method: label_attribute,
+          value_method: :id,
+          input_html: {
+            class: 'use-select2',
+            multiple: true,
+            data: {
+              placeholder: t('carload.placeholder.select', thing: t("activerecord.attributes.#{associated_model}.#{label_attribute}"))
+            }
+          }
       elsif attribute_name =~ /_type$/
         associated_model = attribute_name.gsub(/_type$/, '').to_sym
-        options = Dashboard.model(model_name).associated_models[associated_model]
-        form.input attribute_name, collection: options[:instance_models].map{ |x| x.to_s.camelize },
+        association_specs = Dashboard.model(model_name).associated_models[associated_model]
+        form.input attribute_name, collection: association_specs[:instance_models].map{ |x| x.to_s.camelize },
           input_html: {
             class: 'use-select2',
             data: {
@@ -67,21 +53,29 @@ module Carload
       end
     end
 
-    def generate_search_input form, model_name, attribute
-      if attribute[:options]
-        # There are options to select from.
-        form.input "#{attribute[:name].to_s.gsub('.', '_')}_#{attribute[:term]}",
-          required: false, label: false, collection: attribute[:options],
-          input_html: {
-            class: 'use-select2',
-            data: {
-              placeholder: t('carload.placeholder.select', thing: t("activerecord.attributes.#{model_name}.#{attribute[:name]}"))
-            }
-          }
-      else
-        form.input "#{attribute[:name].to_s.gsub('.', '_')}_#{attribute[:term]}",
-          placeholder: t("activerecord.attributes.#{@model_name}.#{attribute[:name]}"),
-          required: false, label: false
+    def generate_show_title attribute
+      case attribute
+      when Symbol
+        begin
+          t("activerecord.attributes.#{@model_name}.#{attribute}", raise: true)
+        rescue
+          t("carload.activerecord.#{attribute}", raise: true)
+        end
+      when String
+        begin
+          t("activerecord.attributes.#{@model_name}.#{attribute}", raise: true)
+        rescue
+          "#{t("activerecord.attributes.#{attribute}", raise: true)} (#{t("activerecord.models.#{attribute.split('.').first.to_s.singularize}", raise: true)})"
+        end
+      when Array
+        if attribute.first == :pluck
+          raise UnsupportedError.new("attribute #{attribute}") if attribute.size != 3
+          model_name = attribute[1].to_s.singularize
+          attribute_name = attribute[2]
+          "#{t("activerecord.attributes.#{model_name}.#{attribute_name}", raise: true)} (#{t("activerecord.models.#{model_name}", raise: true)})"
+        else
+          "#{t("activerecord.attributes.#{attribute.join('.')}", raise: true)} (#{t("activerecord.models.#{attribute[0].to_s.singularize}", raise: true)})"
+        end
       end
     end
 
@@ -96,6 +90,13 @@ module Carload
           res
         when Array
           raw res.map { |x| "<span class='label label-primary'>#{x}</span>" }.join(' ')
+        end
+      when Array
+        if attribute.first == :pluck
+          raise UnsupportedError.new("attribute #{attribute}") if attribute.size != 3
+          generate_show object, "#{attribute[1].to_s.pluralize}.pluck(:#{attribute[2]})"
+        else
+          generate_show object, attribute.join('.')
         end
       end
     end

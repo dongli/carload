@@ -26,5 +26,15 @@ require 'carload'
     def copy_dashboard_file
       copy_file 'dashboard.rb', 'app/carload/dashboard.rb'
     end
+
+    def copy_migration_files
+      # Copy migrations if necessary.
+      case I18n.locale
+      when :'zh-CN'
+        ['20161030074822_carload_enable_zhparser_extension.rb'].each do |file|
+          copy_file "#{Carload::Engine.root}/db/migrate/#{file}", "db/migrate/#{file}"
+        end
+      end
+    end
   end
 end

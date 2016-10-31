@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'font-awesome-rails', '~> 4.6'
   s.add_dependency 'bootstrap-sass', '~> 3.3'
   s.add_dependency 'simple_form', '~> 3.3'
-  s.add_dependency 'ransack', '~> 1.8'
+  s.add_dependency 'pg_search', '~> 1.0'
   s.add_dependency 'kaminari', '~> 0.17'
   s.add_dependency 'pundit', '~> 1.1'
   s.add_dependency 'select2-rails', '~> 4.0'

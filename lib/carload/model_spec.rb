@@ -57,23 +57,12 @@ module Carload
       @associated_models.each_value do |associated_model|
         next unless associated_model[:choose_by]
         if associated_model[:association_type] == :has_many
-          show_name = "#{associated_model[:name].to_s.pluralize}.pluck(:#{associated_model[:choose_by]})"
-          search_name = "#{associated_model[:name].to_s.pluralize}.#{associated_model[:choose_by]}"
+          show_name = [:pluck, associated_model[:name].to_s.pluralize.to_sym, associated_model[:choose_by]]
         else
           show_name = "#{associated_model[:name]}.#{associated_model[:choose_by]}"
-          search_name = "#{associated_model[:name]}.#{associated_model[:choose_by]}"
         end
         @index_page[:shows][:attributes].delete_if { |x| x == :"#{associated_model[:name]}_id" }
         @index_page[:shows][:attributes] << show_name
-        @index_page[:searches][:attributes].delete_if { |x| x[:name] == :"#{associated_model[:name]}_id" }
-        @index_page[:searches][:attributes] << { name: search_name, term: :cont }
-        if associated_model[:polymorphic]
-          # There should be a <associated_model>_type already.
-          @index_page[:searches][:attributes].each do |attribute|
-            next unless attribute[:name] == :"#{associated_model}_type"
-            attribute[:options] = associated_model[:instance_models]
-          end
-        end
       end
     end
 

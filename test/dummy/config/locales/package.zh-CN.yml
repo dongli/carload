@@ -5,4 +5,5 @@ zh-CN:
     attributes:
       package:
         name: 名称
-        packagable_type: 包装物名称
+        packagable: 包装物
+        packagable_type: 包装物类型

@@ -1,14 +1,3 @@
-GIT
-  remote: git://github.com/dongli/ransack.git
-  revision: 7781dfa611ea11afa49bbe09c88e527dc4cdb7c9
-  specs:
-    ransack (1.8.2)
-      actionpack (>= 3.0)
-      activerecord (>= 3.0)
-      activesupport (>= 3.0)
-      i18n
-      polyamorous (~> 1.3)
-
 PATH
   remote: .
   specs:
@@ -18,9 +7,9 @@ PATH
       highline (~> 1.7)
       jquery-rails (~> 4.2)
       kaminari (~> 0.17)
+      pg_search (~> 1.0)
       pundit (~> 1.1)
       rails (~> 5.0.0, >= 5.0.0.1)
-      ransack (~> 1.8)
       sass-rails (~> 5.0)
       select2-rails (~> 4.0)
       simple_form (~> 3.3)
@@ -130,9 +119,12 @@ GEM
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
     orm_adapter (0.5.0)
+    pg (0.19.0)
+    pg_search (1.0.6)
+      activerecord (>= 3.1)
+      activesupport (>= 3.1)
+      arel
     pkg-config (1.1.7)
-    polyamorous (1.3.1)
-      activerecord (>= 3.0)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
     rack (2.0.1)
@@ -186,7 +178,6 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sqlite3 (1.3.11)
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.5)
@@ -224,9 +215,8 @@ DEPENDENCIES
   devise (~> 4.1.1)
   enumerize
   listen (~> 3.0.5)
-  ransack!
-  sqlite3
+  pg
   web-console
 
 BUNDLED WITH
-   1.12.5
+   1.13.6

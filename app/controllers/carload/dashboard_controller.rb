@@ -8,14 +8,20 @@ module Carload
 
     before_action :set_model
     before_action :set_object, only: [:edit, :update, :destroy]
+    before_action :transform_polymorphic_params, only: [:create, :update]
+
     include Croppable
+    include ApplicationHelper
 
     def index
       authorize :carload_dashboard, :index? unless Carload.auth_solution == :none
-      @search = @model_class.search(params[:q])
-      @objects = @search.result.page(params[:page])
+      if params[:search].present?
+        @query = params[:search][:query]
+        @objects = @model_class.search(params[:search][:query]).page(params[:page])
+      else
+        @objects = @model_class.page(params[:page])
+      end
       @show_attributes = Dashboard.model(@model_name).index_page[:shows][:attributes] + [:created_at, :updated_at]
-      @search_attributes = Dashboard.model(@model_name).index_page[:searches][:attributes]
       render "dashboard/#{@model_names}/index.html.erb"
     end
 
@@ -81,6 +87,16 @@ module Carload
 
     def rescue_unmanaged_model_error exception
       redirect_to dashboard_error_path(message: exception.message)
+    end
+
+    def transform_polymorphic_params
+      polymorphic_params = {}
+      params[@model_name].each do |key, value|
+        if polymorphic? key
+          polymorphic_params["#{key}_id"], polymorphic_params["#{key}_type"] = value.split(',')
+        end
+      end
+      params[@model_name].merge! polymorphic_params
     end
   end
 end

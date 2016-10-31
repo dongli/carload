@@ -1,10 +1,6 @@
-<%= simple_form_for @search, url: dashboard_search_path(@model_names), method: :post do |f| %>
-  <div class='search-fields'>
-    <% @search_attributes.each do |attribute| %>
-      <%= generate_search_input f, @model_name, attribute %>
-    <% end %>
-  </div>
-  <div class='search-buttons'>
-    <%= f.submit t('carload.action.search'), class: 'btn btn-primary' %>
-  </div>
-<% end %>
+<div id='search-input'>
+  <%= form_for :search, url: dashboard_search_path(@model_names), method: :get do |f| %>
+    <span class='icon'><%= fa_icon('search') %></span>
+    <%= f.text_field :query, class: 'form-control', placeholder: 'Search ...', value: @query %>
+  <% end %>
+</div>

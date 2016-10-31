@@ -13,10 +13,12 @@ require 'carload/exceptions'
 module Carload
   def self.setup &block
     # Fill up associations of models.
-    Dashboard.models.each do |name, spec|
-      spec.klass = name.to_s.camelize.constantize
-      spec.klass.reflect_on_all_associations.each do |association|
-        spec.handle_association association
+    if not ARGV.first =~ /db/
+      Dashboard.models.each do |name, spec|
+        spec.klass = name.to_s.camelize.constantize
+        spec.klass.reflect_on_all_associations.each do |association|
+          spec.handle_association association
+        end
       end
     end
     # Read in configuration.
@@ -31,7 +33,7 @@ module Carload
     if not [:carrierwave].include? @@config[:upload_solution]
       raise UnsupportedError.new("upload solution #{@@config[:upload_solution]}")
     end
-
+    # Define configuation helpers.
     @@config.each do |key, value|
       define_singleton_method key do
         value

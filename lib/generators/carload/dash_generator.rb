@@ -8,7 +8,7 @@ module Carload
       model_specs = {}
       Rails.application.eager_load! # It is necessary to load models manually.
       ActiveRecord::Base.descendants.each do |model| # Rails 5 can use ApplicationRecord.
-        next if model.name == 'ApplicationRecord'
+        next if model.name == 'ApplicationRecord' or model.name == 'PgSearch::Document'
         name = model.name.underscore
         model_specs[name] = ModelSpec.new model
       end

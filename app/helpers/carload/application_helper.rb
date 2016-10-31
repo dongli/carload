@@ -8,6 +8,13 @@ module Carload
       end
     end
 
+    def polymorphic? attribute_name
+      Dashboard.model(@model_name).associated_models.each_value do |associated_model|
+        return associated_model[:name] if attribute_name =~ /#{associated_model[:name]}/ and associated_model[:polymorphic]
+      end
+      false
+    end
+
     def image? attribute_name
       attribute_name.to_s =~ /image|logo|img/
     end

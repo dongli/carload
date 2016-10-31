@@ -1,8 +1,7 @@
 zh-CN:
   activerecord:
     models:
-      item: 项目
+      inventory: 清单
     attributes:
-      item:
+      inventory:
         name: 名称
-        image: 图片

@@ -1,7 +1,19 @@
 <%= simple_form_for @object, url: "/carload/dashboard/#{@model_names}/#{@object.id}" do |f| %>
+  <!-- Normal attributes -->
   <% @model_class.columns_hash.each do |name, column| %>
-    <% next if Carload::ModelSpec::SkippedAttributes.include? name %>
-    <%= generate_input(f, @model_name, name) %>
+    <% next if Carload::ModelSpec::SkippedAttributes.include? name or polymorphic? name %>
+    <%= generate_input f, @model_name, name %>
+  <% end %>
+  <!-- Polymorphics -->
+  <% Dashboard.model(@model_name).associated_models.each_value do |associated_model| %>
+    <% next if associated_model[:polymorphic] != true %>
+    <%= generate_input f, @model_name, associated_model[:name], polymorphic: true,
+      value: "#{@object.send("#{associated_model[:name]}_id")},#{@object.send("#{associated_model[:name]}_type")}" %>
+  <% end %>
+  <!-- Join tables -->
+  <% Dashboard.model(@model_name).associated_models.each_value do |associated_model| %>
+    <% next if not associated_model[:join_table] %>
+    <%= generate_input f, @model_name, 'product_ids' %>
   <% end %>
   <%= f.button :submit, t('carload.action.submit'), class: 'btn btn-primary' %>
 <% end %>
