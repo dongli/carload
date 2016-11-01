@@ -66,26 +66,32 @@ module Carload
       end
     end
 
-    def handle_association association
-      _association = (association.delegate_reflection rescue nil) || association
-      name = (_association.klass.name.underscore.to_sym rescue nil) || _association.name
-      association_type = AssociationTypes[_association.class]
-      polymorphic = association.options[:polymorphic] || association.options[:as]
-      foreign_key =  @klass.column_names.include?("#{(_association.klass.name.underscore rescue nil) || _association.name}_id")
-      join_table = association.options[:through].to_s.singularize.to_sym if association.options[:through]
-      @associated_models[name] = {
-        name: name,
-        association_type: association_type,
-        polymorphic: polymorphic,
-        foreign_key: foreign_key,
-        join_table: join_table,
-        choose_by: nil
-      }.merge @associated_models[name] || {}
-      association_pipelines.each { |pipeline| send pipeline, association }
-      # Delete join-table model!
-      if association.options[:through]
-        @associated_models.delete association.options[:through]
-        @associated_models.delete association.options[:through].to_s.singularize.to_sym
+    def handle_association association, options = {}
+      begin
+        _association = (association.delegate_reflection rescue nil) || association
+        name = (_association.klass.name.underscore.to_sym rescue nil) || _association.name
+        association_type = AssociationTypes[_association.class]
+        polymorphic = association.options[:polymorphic] || association.options[:as]
+        foreign_key =  @klass.column_names.include?("#{(_association.klass.name.underscore rescue nil) || _association.name}_id")
+        join_table = association.options[:through].to_s.singularize.to_sym if association.options[:through]
+        @associated_models[name] = {
+          name: name,
+          association_type: association_type,
+          polymorphic: polymorphic,
+          foreign_key: foreign_key,
+          join_table: join_table,
+          choose_by: nil
+        }.merge @associated_models[name] || {}
+        association_pipelines.each { |pipeline| send pipeline, association }
+        # Delete join-table model!
+        if association.options[:through]
+          @associated_models.delete association.options[:through]
+          @associated_models.delete association.options[:through].to_s.singularize.to_sym
+        end
+      rescue => e
+        raise e unless options[:rescue]
+        raise e if not e&.original_exception&.class == PG::UndefinedTable and
+                   not e.class == ActiveRecord::NoDatabaseError
       end
     end
   end
