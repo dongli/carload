@@ -18,5 +18,14 @@ module Carload
     def image? attribute_name
       attribute_name.to_s =~ /image|logo|img/
     end
+
+    def id_or_ids associated_model
+      case associated_model[:association_type]
+      when :has_many
+        "#{associated_model[:name]}_ids"
+      else
+        "#{associated_model[:name]}_id"
+      end
+    end
   end
 end

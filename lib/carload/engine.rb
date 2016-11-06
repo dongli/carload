@@ -10,11 +10,18 @@ module Carload
     end
 
     config.after_initialize do
+      # Fill up associations of models.
+      Dashboard.models.each do |name, spec|
+        spec.klass = name.to_s.camelize.constantize
+        spec.klass.reflect_on_all_associations.each do |association|
+          spec.handle_association association, rescue: true
+        end
+      end
+      # Reopen model classes to add pg text search.
       Dictionaries = {
         en: 'english',
         :'zh-CN' => 'zhparser'
       }.freeze
-      # Reopen model classes to add pg text search.
       Dashboard.models.each do |name, spec|
         # NOTE: Only direct columns are included.
         attributes = spec.index_page.searches.attributes.select { |x| x[:name].class == Symbol }.map { |x| x[:name] }

@@ -12,13 +12,6 @@ require 'carload/exceptions'
 
 module Carload
   def self.setup &block
-    # Fill up associations of models.
-    Dashboard.models.each do |name, spec|
-      spec.klass = name.to_s.camelize.constantize
-      spec.klass.reflect_on_all_associations.each do |association|
-        spec.handle_association association, rescue: true
-      end
-    end
     # Read in configuration.
     @@config = ExtendedHash.new
     @@config[:page] = ExtendedHash.new

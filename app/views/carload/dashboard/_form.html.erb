@@ -13,7 +13,7 @@
   <!-- Join tables -->
   <% Dashboard.model(@model_name).associated_models.each_value do |associated_model| %>
     <% next if not associated_model[:join_table] %>
-    <%= generate_input f, @model_name, 'product_ids' %>
+    <%= generate_input f, @model_name, id_or_ids(associated_model) %>
   <% end %>
   <%= f.button :submit, t('carload.action.submit'), class: 'btn btn-primary' %>
 <% end %>
