@@ -6,7 +6,7 @@ module Carload
     rescue_from ActionView::MissingTemplate, with: :rescue_missing_template
     rescue_from Carload::UnmanagedModelError, with: :rescue_unmanaged_model_error
 
-    before_action :set_model
+    before_action :set_model, except: [:config]
     before_action :set_object, only: [:edit, :update, :destroy]
     before_action :transform_polymorphic_params, only: [:create, :update]
 
@@ -67,6 +67,9 @@ module Carload
     def search
       params[:action] = :index # To make rescue_missing_template use correct index action.
       index
+    end
+
+    def show_config
     end
 
     private

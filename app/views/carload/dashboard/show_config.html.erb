@@ -1,0 +1,23 @@
+<div class='panel panel-default'>
+  <div class='panel-heading center'>
+    <%= t('carload.config.title') %>
+  </div>
+  <div class='panel-body'>
+    <table class='table table-striped'>
+      <thead>
+        <tr>
+          <th width='100'><%= t('carload.config.key') %></th>
+          <th width='100'><%= t('carload.config.value') %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% ['page.title', 'page.footer', 'page.main_color', 'page.text_color', 'page.button_color', 'page.button_text_color', 'auth_solution', 'upload_solution', 'search_engine', 'dashboard.permits_user.all'].each do |key| %>
+          <tr>
+            <td><%= key %></td>
+            <td><%= eval "Carload.#{key}" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

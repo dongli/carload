@@ -19,6 +19,12 @@ zh-CN:
     placeholder:
       select: 请选择%{thing}
 
+    config:
+      show: 查看配置
+      title: Carload配置列表
+      key: 配置名称
+      value: 配置值
+
     error:
       title:
         dashboard: 遇到操作错误！

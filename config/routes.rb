@@ -1,6 +1,7 @@
 Carload::Engine.routes.draw do
   root 'dashboard#index'
 
+  get    'dashboard/config'        => 'dashboard#show_config',  as: :dashboard_show_config
   get    'dashboard(/:model)'      => 'dashboard#index',   as: :dashboard_index
   match  'dashboard/:model/search' => 'dashboard#search',  as: :dashboard_search, via: [:get, :post]
   get    'dashboard/:model/new'    => 'dashboard#new',     as: :dashboard_new

@@ -25,7 +25,8 @@
     </div>
 
     <footer class='center'>
-      <%= raw Carload.page.footer || t('carload.footer.message') %>
+      <%= raw Carload.page.footer || t('carload.footer.message') %> |
+      <%= link_to t('carload.config.show'), dashboard_show_config_path %>
     </footer>
   </div>
 

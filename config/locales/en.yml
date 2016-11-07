@@ -19,6 +19,12 @@ en:
     placeholder:
       select: Select %{thing}
 
+    config:
+      show: View config
+      title: Carload configuration list
+      key: Configuration name
+      value: Configuration value
+
     error:
       title:
         dashboard: Encounter web operation error!
