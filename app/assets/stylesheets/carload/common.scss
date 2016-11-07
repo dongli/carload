@@ -81,3 +81,11 @@ th {
 .label-primary {
   background-color: $main-color;
 }
+
+ul.horizontal-clean-list {
+  -webkit-padding-start: 0;
+  li {
+    display: inline-block;
+    margin-right: $half-spacing;
+  }
+}

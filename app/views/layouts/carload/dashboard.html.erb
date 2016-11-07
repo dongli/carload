@@ -25,8 +25,15 @@
     </div>
 
     <footer class='center'>
-      <%= raw Carload.page.footer || t('carload.footer.message') %> |
-      <%= link_to t('carload.config.show'), dashboard_show_config_path %>
+      <ul class='horizontal-clean-list'>
+        <li><%= raw Carload.page.footer || t('carload.footer.message') %></li>
+        <li>
+          <ul class='horizontal-clean-list'>
+            <li><%= link_to fa_icon('gears'), dashboard_show_config_path %></li>
+            <li><%= link_to fa_icon('github'), 'https://github.com/dongli/carload' %></li>
+          </ul>
+        </li>
+      </ul>
     </footer>
   </div>
 
