@@ -25,6 +25,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'bootstrap-sass', '~> 3.3'
   s.add_dependency 'simple_form', '~> 3.3'
   s.add_dependency 'pg_search', '~> 1.0'
+  s.add_dependency 'elasticsearch-model', '~> 0.1'
+  s.add_dependency 'elasticsearch-rails', '~> 0.1'
   s.add_dependency 'kaminari', '~> 0.17'
   s.add_dependency 'pundit', '~> 1.1'
   s.add_dependency 'select2-rails', '~> 4.0'

@@ -14,4 +14,10 @@ module Carload
       @message = "Carload does not support #{data} currently."
     end
   end
+
+  class InvalidError < Error
+    def initialize data
+      @message = data
+    end
+  end
 end

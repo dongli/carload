@@ -29,10 +29,16 @@ require 'carload'
 
     def copy_migration_files
       # Copy migrations if necessary.
-      case I18n.locale
-      when :'zh-CN'
-        ['20161030074822_carload_enable_zhparser_extension.rb'].each do |file|
-          copy_file "#{Carload::Engine.root}/db/migrate/#{file}", "db/migrate/#{file}"
+      if Carload.search_engine == :pg_search
+        adapter = ActiveRecord::Base.connection.instance_values["config"][:adapter]
+        if adapter != 'postgresql'
+          raise InvalidError.new("Database adapter #{adapter} cannot work with pg_search!")
+        end
+        case I18n.locale
+        when :'zh-CN'
+          ['20161030074822_carload_enable_zhparser_extension.rb'].each do |file|
+            copy_file "#{Carload::Engine.root}/db/migrate/#{file}", "db/migrate/#{file}"
+          end
         end
       end
     end

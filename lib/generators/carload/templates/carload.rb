@@ -17,6 +17,9 @@ Carload.setup do |config|
   # Set which file upload solution is used. Currently, we only support Carrierwave.
   config.upload_solution = :carrierwave
 
+  # Set which search engine to use (elasticsearch or pg_search).
+  config.search_engine = :elasticsearch
+
   # Set the actions used to discern user's permission to access dashboard.
   #
   #   config.dashboard.permits_user.<method> = '...'

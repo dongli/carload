@@ -17,7 +17,12 @@ module Carload
       authorize :carload_dashboard, :index? unless Carload.auth_solution == :none
       if params[:search].present?
         @query = params[:search][:query]
-        @objects = @model_class.search(params[:search][:query]).page(params[:page])
+        case Carload.search_engine
+        when :elasticsearch
+          @objects = @model_class.search(params[:search][:query]).records.page(params[:page])
+        when :pg_search
+          @objects = @model_class.search(params[:search][:query]).page(params[:page])
+        end
       else
         @objects = @model_class.page(params[:page])
       end

@@ -12,7 +12,7 @@
   <div id='main-container'>
     <div id='top-nav-buttons' class='center'>
       <div class='btn-group' role='group'>
-        <%= link_to t('carload.action.back_to_root'), main_app.root_path, class: 'btn btn-default' %>
+        <%= link_to t('carload.action.back_to_root'), (main_app.root_path rescue root_path), class: 'btn btn-default' %>
         <% Dashboard.models.keys.each do |model| %>
           <%= link_to t("activerecord.models.#{model}"), dashboard_index_path(model),
             class: "#{@model_name == model ? 'active' : ''} btn btn-default" %>
