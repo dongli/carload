@@ -29,7 +29,7 @@ require 'carload'
 
     def copy_migration_files
       # Copy migrations if necessary.
-      if Carload.search_engine == :pg_search
+      if (Carload.search_engine rescue nil) == :pg_search
         adapter = ActiveRecord::Base.connection.instance_values["config"][:adapter]
         if adapter != 'postgresql'
           raise InvalidError.new("Database adapter #{adapter} cannot work with pg_search!")

@@ -18,7 +18,7 @@ module Carload
         end
       end
       # Reopen model classes to add pg text search.
-      case Carload.search_engine
+      case (Carload.search_engine rescue nil)
       when :elasticsearch
         Dashboard.models.each do |name, spec|
           spec.klass.class_eval do
