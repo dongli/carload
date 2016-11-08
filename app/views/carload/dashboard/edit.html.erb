@@ -1,6 +1,6 @@
 <div class='panel panel-default model-edit-panel'>
   <div class='panel-heading'>
-    <%= t('carload.form.title.edit', model: @model_class) %>
+    <%= t('carload.form.title.edit', model: (t("activerecord.models.#{@model_name}", raise: true) rescue @model_class)) %>
   </div>
   <div class='panel-body'>
     <% begin %>
