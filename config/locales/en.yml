@@ -11,10 +11,12 @@ en:
     actions: Actions
     action:
       add: Add
+      edit: Edit
       submit: Submit
       back: Back
       back_to_root: Back to Root
       search: Search
+      preview: Preview
 
     placeholder:
       select: Select %{thing}

@@ -11,10 +11,12 @@ zh-CN:
     actions: 操作
     action:
       add: 添加
+      edit: 编辑
       submit: 提交
       back: 后退
       back_to_root: 返回应用
       search: 搜索
+      preview: 预览
 
     placeholder:
       select: 请选择%{thing}

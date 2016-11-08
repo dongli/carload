@@ -48,6 +48,33 @@ module Carload
           }
       elsif needs_upload?(model_name, attribute_name) and image?(attribute_name)
         upload_image form: form, image_name: attribute_name, width: 150, height: 150
+      elsif options[:type] == :text
+        form.input(attribute_name, label: raw(<<-EOT
+          <span class="control-label string optional">#{t("activerecord.attributes.#{@model_name}.#{attribute_name}")}</span>
+          <a id='preview-#{attribute_name}-button' class='btn btn-xs' data-toggle='on'>#{t('carload.action.preview')}</a>
+        EOT
+        )) + raw(<<-EOT
+          <script>
+            $('.#{@model_name}_#{attribute_name}').append("<div id='preview-#{attribute_name}-content' class='markdown-preview'></div>")
+            $('#preview-#{attribute_name}-button').click(function() {
+              if ($(this).data('toggle') == 'on') {
+                var md = new Remarkable()
+                var marked_content = md.render($('##{@model_name}_#{attribute_name}').val())
+                $('##{@model_name}_#{attribute_name}').hide()
+                $('#preview-#{attribute_name}-content').html(marked_content)
+                $('#preview-#{attribute_name}-content').show()
+                $(this).data('toggle', 'off')
+                $(this).html('#{t('carload.action.edit')}')
+              } else if ($(this).data('toggle') == 'off') {
+                $('##{@model_name}_#{attribute_name}').show()
+                $('#preview-#{attribute_name}-content').hide()
+                $(this).data('toggle', 'on')
+                $(this).html('#{t('carload.action.preview')}')
+              }
+            })
+          </script>
+        EOT
+        )
       else
         form.input attribute_name
       end

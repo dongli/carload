@@ -4,6 +4,7 @@
 //= require bootstrap-sprockets
 //= require select2
 //= require upload-image
+//= require remarkable/remarkable.min
 //= require_tree .
 
 $(document).on('turbolinks:load', function() {
