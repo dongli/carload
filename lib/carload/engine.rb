@@ -30,7 +30,7 @@ module Carload
               index: self.index_name,
               body: { settings: self.settings.to_hash, mappings: self.mappings.to_hash }
           end
-          spec.klass.import
+          spec.klass.import rescue nil
         end
       when :pg_search
         Dictionaries = {
