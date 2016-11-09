@@ -51,7 +51,7 @@ module Carload
       elsif options[:type] == :text
         form.input(attribute_name, label: raw(<<-EOT
           <span class="control-label string optional">#{t("activerecord.attributes.#{@model_name}.#{attribute_name}")}</span>
-          <a id='preview-#{attribute_name}-button' class='btn btn-xs' data-toggle='on'>#{t('carload.action.preview')}</a>
+          <a id='preview-#{attribute_name}-button' class='btn btn-xs' data-toggle='on'>#{t('carload.action.preview')} (Markdown)</a>
         EOT
         )) + raw(<<-EOT
           <script>
@@ -64,12 +64,12 @@ module Carload
                 $('#preview-#{attribute_name}-content').html(marked_content)
                 $('#preview-#{attribute_name}-content').show()
                 $(this).data('toggle', 'off')
-                $(this).html('#{t('carload.action.edit')}')
+                $(this).html('#{t('carload.action.edit')} (Markdown)')
               } else if ($(this).data('toggle') == 'off') {
                 $('##{@model_name}_#{attribute_name}').show()
                 $('#preview-#{attribute_name}-content').hide()
                 $(this).data('toggle', 'on')
-                $(this).html('#{t('carload.action.preview')}')
+                $(this).html('#{t('carload.action.preview')} (Markdown)')
               }
             })
           </script>
