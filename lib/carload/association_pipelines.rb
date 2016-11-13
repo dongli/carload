@@ -66,7 +66,7 @@ module Carload
     end
 
     # Change permitted attributes for renamed attributes.
-    def pipeline_5
+    def pipeline_5 association
       if association.options[:class_name]
         model_name = associated_model_name(association)
         model_rename = association.name.to_s.singularize.to_sym
