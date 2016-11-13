@@ -23,6 +23,10 @@ module Carload
         # Mandle many-to-many association.
         associated_model = attribute_name.gsub(/_ids$/, '').to_sym
         association_specs = Dashboard.model(model_name).associated_models[associated_model]
+        if Dashboard.model(model_name).associated_models[associated_model][:rename]
+          renamed_associated_model = Dashboard.model(model_name).associated_models[associated_model][:rename]
+          attribute_name = "#{renamed_associated_model}_ids"
+        end
         label_attribute = association_specs[:choose_by]
         form.input attribute_name,
           label: t("activerecord.attributes.#{associated_model}.#{label_attribute}") + " (#{t("activerecord.models.#{associated_model}")})",
@@ -99,7 +103,11 @@ module Carload
           raise UnsupportedError.new("attribute #{attribute}") if attribute.size != 3
           model_name = attribute[1].to_s.singularize
           attribute_name = attribute[2]
-          "#{t("activerecord.attributes.#{model_name}.#{attribute_name}", raise: true)} (#{t("activerecord.models.#{model_name}", raise: true)})"
+          begin
+            "#{t("activerecord.attributes.#{model_name}.#{attribute_name}", raise: true)} (#{t("activerecord.models.#{model_name}", raise: true)})"
+          rescue
+            "#{t("activerecord.attributes.#{@model_name}.#{model_name}.#{attribute_name}", raise: true)}"
+          end
         else
           "#{t("activerecord.attributes.#{attribute.join('.')}", raise: true)} (#{t("activerecord.models.#{attribute[0].to_s.singularize}", raise: true)})"
         end
