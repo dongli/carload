@@ -9,31 +9,13 @@ module Carload
     end
 
     def association_pipelines
-      [ :pipeline_1, :pipeline_2, :pipeline_3, :pipeline_4 ]
+      [ :pipeline_1, :pipeline_2, :pipeline_3, :pipeline_4, :pipeline_5 ]
     end
 
     # Check if association model is renamed.
     def pipeline_1 association
       if association.options[:class_name]
-        model_name = associated_model_name(association)
-        model_rename = association.name.to_s.singularize.to_sym
-        @associated_models[model_name][:rename] = model_rename
-        @attributes[:permitted].map! do |attribute|
-          case attribute
-          when Symbol
-            if attribute.to_s =~ /#{model_name}/
-              attribute.to_s.gsub(model_name.to_s, model_rename.to_s).to_sym
-            else
-              attribute
-            end
-          when Hash
-            if attribute.keys.first.to_s =~ /#{model_name}/
-              { attribute.keys.first.to_s.gsub(model_name.to_s, model_rename.to_s).to_sym => [] }
-            else
-              attribute
-            end
-          end
-        end
+        @associated_models[associated_model_name(association)][:rename] = association.name.to_s.singularize.to_sym
       end
     end
 
@@ -81,6 +63,31 @@ module Carload
         return if permitted.keys.first == :"#{_association.class_name.underscore}_ids"
       end
       @attributes[:permitted] << { :"#{_association.class_name.underscore}_ids" => [] }
+    end
+
+    # Change permitted attributes for renamed attributes.
+    def pipeline_5
+      if association.options[:class_name]
+        model_name = associated_model_name(association)
+        model_rename = association.name.to_s.singularize.to_sym
+        @associated_models[model_name][:rename] = model_rename
+        @attributes[:permitted].map! do |attribute|
+          case attribute
+          when Symbol
+            if attribute.to_s =~ /#{model_name}/
+              attribute.to_s.gsub(model_name.to_s, model_rename.to_s).to_sym
+            else
+              attribute
+            end
+          when Hash
+            if attribute.keys.first.to_s =~ /#{model_name}/
+              { attribute.keys.first.to_s.gsub(model_name.to_s, model_rename.to_s).to_sym => [] }
+            else
+              attribute
+            end
+          end
+        end
+      end
     end
   end
 end
