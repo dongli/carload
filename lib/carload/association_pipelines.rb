@@ -23,10 +23,14 @@ module Carload
           when Symbol
             if attribute.to_s =~ /#{model_name}/
               attribute.to_s.gsub(model_name.to_s, model_rename.to_s).to_sym
+            else
+              attribute
             end
           when Hash
             if attribute.keys.first.to_s =~ /#{model_name}/
               { attribute.keys.first.to_s.gsub(model_name.to_s, model_rename.to_s).to_sym => [] }
+            else
+              attribute
             end
           end
         end
