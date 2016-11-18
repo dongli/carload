@@ -1,8 +1,6 @@
 module Carload
   class ModelSpec
-    include AssociationPipelines
-
-    attr_accessor :name, :klass, :default, :attributes, :index_page, :associated_models
+    attr_accessor :name, :klass, :default, :attributes, :index_page, :associations
 
     SkippedAttributes = [
       'id', 'created_at', 'updated_at',
@@ -13,13 +11,6 @@ module Carload
       'last_sign_in_ip'
     ].freeze
 
-    AssociationTypes = {
-      ActiveRecord::Reflection::BelongsToReflection => :belongs_to,
-      ActiveRecord::Reflection::HasOneReflection => :has_one,
-      ActiveRecord::Reflection::HasManyReflection => :has_many,
-      ActiveRecord::Reflection::ThroughReflection => :through
-    }
-
     def initialize model_class = nil
       @default = false
       @attributes = ExtendedHash.new
@@ -28,19 +19,54 @@ module Carload
       @index_page[:shows][:attributes] ||= []
       @index_page[:searches] = ExtendedHash.new
       @index_page[:searches][:attributes] ||= []
-      @associated_models = {}
+      @associations ||= {}
       if model_class
         @name = model_class.name.underscore
         @klass = model_class
         @attributes[:permitted] = (model_class.column_names - SkippedAttributes).map(&:to_sym)
-        # Handle model associations.
-        model_class.reflect_on_all_associations.each do |association|
-          handle_association association
-        end
         @attributes[:permitted].each do |attribute|
           next if attribute.class == Hash
           @index_page[:shows][:attributes] << attribute
           @index_page[:searches][:attributes] << { name: attribute.to_sym, term: :cont }
+        end
+        model_class.reflect_on_all_associations.each do |reflection|
+          @associations[reflection.name] = {
+            reflection: reflection,
+            choose_by: nil
+          }
+        end
+        process_associaitons
+      end
+    end
+
+    def process_associaitons
+      @associations.each_value do |association|
+        reflection = association[:reflection]
+        if join_table = reflection.options[:through] and @associations.has_key? join_table
+          # Filter join table.
+          @associations.select { |k, v| v[:reflection].name == join_table }.values.first[:filtered] = true
+          # Permit foreign id.
+          case reflection.delegate_reflection
+          when ActiveRecord::Reflection::HasOneReflection
+            @attributes[:permitted] << :"#{reflection.delegate_reflection.name}_id"
+          when ActiveRecord::Reflection::HasManyReflection
+            @attributes[:permitted] << { :"#{reflection.delegate_reflection.name.to_s.singularize}_ids" => [] }
+          end
+        elsif reflection.options[:polymorphic]
+          ActiveRecord::Base.descendants.each do |_model|
+            next if _model.name == 'ApplicationRecord' or _model.name.underscore == @name.to_s
+            _model.reflect_on_all_associations.each do |_reflection|
+              next unless _reflection.options[:as] == reflection.name
+              if association.has_key? :attributes
+                association[:attributes] = association[:attributes] & _model.column_names
+              else
+                association[:attributes] = _model.column_names - SkippedAttributes
+              end
+              association[:instance_models] ||= []
+              association[:instance_models] << _model.name.underscore.to_sym
+            end
+          end
+          association[:attributes] = association[:attributes].map(&:to_sym)
         end
       end
     end
@@ -50,49 +76,6 @@ module Carload
       not @attributes[:permitted] == spec.attributes[:permitted] or
       not @index_page[:shows][:attributes] == spec.index_page[:shows][:attributes] or
       not @index_page[:searches][:attributes] == spec.index_page[:searches][:attributes]
-    end
-
-    def revise!
-      # Handle associated models if necessary.
-      @associated_models.each_value do |associated_model|
-        next unless associated_model[:choose_by]
-        if associated_model[:association_type] == :has_many
-          show_name = [:pluck, associated_model[:name].to_s.pluralize.to_sym, associated_model[:choose_by]]
-        else
-          show_name = "#{associated_model[:name]}.#{associated_model[:choose_by]}"
-        end
-        @index_page[:shows][:attributes].delete_if { |x| x == :"#{associated_model[:name]}_id" }
-        @index_page[:shows][:attributes] << show_name
-      end
-    end
-
-    def handle_association association, options = {}
-      begin
-        _association = (association.delegate_reflection rescue nil) || association
-        name = (_association.klass.name.underscore.to_sym rescue nil) || _association.name
-        association_type = AssociationTypes[_association.class]
-        polymorphic = association.options[:polymorphic] || association.options[:as]
-        foreign_key =  @klass.column_names.include?("#{(_association.klass.name.underscore rescue nil) || _association.name}_id")
-        join_table = association.options[:through].to_s.singularize.to_sym if association.options[:through]
-        @associated_models[name] = {
-          name: name,
-          association_type: association_type,
-          polymorphic: polymorphic,
-          foreign_key: foreign_key,
-          join_table: join_table,
-          choose_by: nil
-        }.merge @associated_models[name] || {}
-        association_pipelines.each { |pipeline| send pipeline, association }
-        # Delete join-table model!
-        if association.options[:through]
-          @associated_models.delete association.options[:through]
-          @associated_models.delete association.options[:through].to_s.singularize.to_sym
-        end
-      rescue => e
-        raise e unless options[:rescue]
-        raise e if not e&.original_exception&.class == PG::UndefinedTable and
-                   not e.class == ActiveRecord::NoDatabaseError
-      end
     end
   end
 end

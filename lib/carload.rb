@@ -9,7 +9,6 @@ Gem.loaded_specs['carload'].dependencies.each do |dependency|
 end
 
 require 'carload/extended_hash'
-require 'carload/association_pipelines'
 require 'carload/model_spec'
 require 'carload/dashboard'
 require 'carload/engine'

@@ -1,5 +1,3 @@
-require_relative 'devise'
-
 Carload.setup do |config|
   # Set the title that will be displayed on the browser tab area.
   config.page.title = 'Carload Test'
@@ -18,6 +16,8 @@ Carload.setup do |config|
 
   # Set which file upload solution is used. Currently, we only support Carrierwave.
   config.upload_solution = :carrierwave
+
+  config.search_engine = :elasticsearch
 
   # Set the actions used to discern user's permission to access dashboard.
   # Note: This will be evaluated as eval("user.#{Carload.dashboard.permitted_user.all}").

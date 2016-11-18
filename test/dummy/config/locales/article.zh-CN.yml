@@ -1,0 +1,9 @@
+zh-CN:
+  activerecord:
+    models:
+      article: 文章
+    attributes:
+      article:
+        title: 题目
+        author:
+          email: 作者邮箱

@@ -3,42 +3,53 @@ module Carload
     source_root File.expand_path('../templates', __FILE__)
 
     def change_dashboard_file
+      # It is necessary to load models manually.
+      Rails.application.eager_load!
       # Process model once atime.
-      model = file_name
       model_specs = {}
-      Rails.application.eager_load! # It is necessary to load models manually.
       ActiveRecord::Base.descendants.each do |model| # Rails 5 can use ApplicationRecord.
         next if model.name == 'ApplicationRecord' or model.name == 'PgSearch::Document'
-        name = model.name.underscore
-        model_specs[name] = ModelSpec.new model
+        model_specs[model.name.underscore.to_sym] = ModelSpec.new model
       end
-      spec = model_specs[model]
-      if not spec.associated_models.empty?
+      model_name = file_name.to_sym
+      spec = model_specs[model_name]
+      if not spec.associations.empty?
         cli = HighLine.new
-        spec.associated_models.each_value do |associated_model|
-          next if associated_model[:attributes].empty?
-          if associated_model[:polymorphic]
-            attributes = associated_model[:attributes]
+        spec.associations.each do |name, association|
+          next if association[:filtered]
+          reflection = association[:reflection]
+          next if reflection.class ==
+          if reflection.options[:polymorphic]
+            attributes = association[:attributes]
+          elsif reflection.options[:class_name]
+            attributes = model_specs[reflection.options[:class_name].underscore.to_sym].attributes.permitted.select { |x| x.class != Hash }
           else
-            attributes = model_specs[associated_model[:name].to_s].attributes.permitted.select { |x| x.class != Hash }
+            attributes = model_specs[reflection.name.to_s.singularize.to_sym].attributes.permitted.select { |x| x.class != Hash }
           end
           if attributes.size == 1
-            associated_model[:choose_by] = attributes.first
+            association[:choose_by] = attributes.first
           else
-            associated_model[:choose_by] = cli.choose do |menu|
-              menu.prompt = "Choose the attribute of model #{associated_model[:name]} for choosing in #{model}? "
+            association[:choose_by] = cli.choose do |menu|
+              menu.prompt = "Choose the attribute of model #{reflection.name} for choosing in #{model_name}? "
               attributes.each do |attribute|
                 next if attribute.to_s =~ /_id$/
                 menu.choice attribute
               end
             end
           end
+          # Change corresponding show attribute.
+          spec.index_page[:shows][:attributes] = spec.index_page[:shows][:attributes].map do |attribute|
+            if attribute.to_s =~ /#{name}/
+              attribute = "#{name}.#{association[:choose_by]}"
+            else
+              attribute
+            end
+          end
         end
-        spec.revise!
       end
       # Check if model exists in dashboard file, but it may be changed.
-      if not Dashboard.models.keys.include? model.to_sym or Dashboard.model(model).changed? spec
-        Dashboard.models[model.to_sym] = spec
+      if not Dashboard.models.keys.include? model_name or Dashboard.model(model_name).changed? spec
+        Dashboard.models[model_name] = spec
         Dashboard.write 'app/carload/dashboard.rb'
       end
     end

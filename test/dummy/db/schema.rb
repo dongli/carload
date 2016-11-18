@@ -10,11 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161030074822) do
+ActiveRecord::Schema.define(version: 20161115095223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "zhparser"
+
+  create_table "article_reader_joins", force: :cascade do |t|
+    t.integer  "article_id"
+    t.integer  "reader_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_article_reader_joins_on_article_id", using: :btree
+    t.index ["reader_id"], name: "index_article_reader_joins_on_reader_id", using: :btree
+  end
+
+  create_table "articles", force: :cascade do |t|
+    t.integer  "author_id"
+    t.string   "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_articles_on_author_id", using: :btree
+  end
 
   create_table "inventories", force: :cascade do |t|
     t.string   "name"

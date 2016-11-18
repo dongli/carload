@@ -9,8 +9,9 @@ module Carload
     end
 
     def polymorphic? attribute_name
-      Dashboard.model(@model_name).associated_models.each_value do |associated_model|
-        return associated_model[:name] if attribute_name =~ /#{associated_model[:name]}/ and associated_model[:polymorphic]
+      Dashboard.model(@model_name).associations.each_value do |association|
+        reflection = association[:reflection]
+        return reflection.name if attribute_name =~ /#{reflection.name}/ and reflection.options[:polymorphic]
       end
       false
     end
@@ -19,12 +20,20 @@ module Carload
       attribute_name.to_s =~ /image|logo|img/
     end
 
-    def id_or_ids associated_model
-      case associated_model[:association_type]
-      when :has_many
-        "#{associated_model[:name]}_ids"
+    def associated_model_name model_name, attribute_name
+      x = attribute_name.gsub(/_ids?$/, '').to_sym
+      Dashboard.model(model_name).associations.each do |name, association|
+        return association[:class_name] || x, name if name.to_s.singularize.to_sym == x
+      end
+      raise 'Should not go here!'
+    end
+
+    def id_or_ids reflection
+      case reflection
+      when ActiveRecord::Reflection::HasManyReflection
+        "#{reflection.name.to_s.singularize}_ids"
       else
-        "#{associated_model[:name]}_id"
+        "#{reflection.name}_id"
       end
     end
   end

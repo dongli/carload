@@ -7,47 +7,32 @@ module Carload
           selected: options[:value],
           input_html: { class: 'use-select2' }
       elsif attribute_name =~ /_id$/
-        associated_model = attribute_name.gsub(/_id$/, '').to_sym
-        association_specs = Dashboard.model(model_name).associated_models[associated_model]
-        label_attribute = association_specs[:choose_by]
-        form.association associated_model,
+        class_name, association_name = associated_model_name model_name, attribute_name
+        association = Dashboard.model(model_name).associations[association_name]
+        label_attribute = association[:choose_by]
+        form.association association_name,
           label_method: label_attribute,
-          label: t("activerecord.models.#{associated_model}"),
+          label: t("activerecord.models.#{class_name}"),
           input_html: {
             class: 'use-select2',
             data: {
-              placeholder: t('carload.placeholder.select', thing: t("activerecord.attributes.#{associated_model}.#{label_attribute}"))
+              placeholder: t('carload.placeholder.select', thing: t("activerecord.attributes.#{class_name}.#{label_attribute}"))
             }
           }
       elsif attribute_name =~ /_ids$/
-        # Mandle many-to-many association.
-        associated_model = attribute_name.gsub(/_ids$/, '').to_sym
-        association_specs = Dashboard.model(model_name).associated_models[associated_model]
-        if Dashboard.model(model_name).associated_models[associated_model][:rename]
-          renamed_associated_model = Dashboard.model(model_name).associated_models[associated_model][:rename]
-          attribute_name = "#{renamed_associated_model}_ids"
-        end
-        label_attribute = association_specs[:choose_by]
+        class_name, association_name = associated_model_name model_name, attribute_name
+        association = Dashboard.model(model_name).associations[association_name]
+        label_attribute = association[:choose_by]
         form.input attribute_name,
-          label: t("activerecord.attributes.#{associated_model}.#{label_attribute}") + " (#{t("activerecord.models.#{associated_model}")})",
-          collection: associated_model.to_s.camelize.constantize.all,
+          label: t("activerecord.attributes.#{class_name}.#{label_attribute}") + " (#{t("activerecord.models.#{class_name}")})",
+          collection: class_name.to_s.camelize.constantize.all,
           label_method: label_attribute,
           value_method: :id,
           input_html: {
             class: 'use-select2',
             multiple: true,
             data: {
-              placeholder: t('carload.placeholder.select', thing: t("activerecord.attributes.#{associated_model}.#{label_attribute}"))
-            }
-          }
-      elsif attribute_name =~ /_type$/
-        associated_model = attribute_name.gsub(/_type$/, '').to_sym
-        association_specs = Dashboard.model(model_name).associated_models[associated_model]
-        form.input attribute_name, collection: association_specs[:instance_models].map{ |x| x.to_s.camelize },
-          input_html: {
-            class: 'use-select2',
-            data: {
-              placeholder: t('carload.placeholder.select', thing: t("activerecord.attributes.#{model_name}.#{attribute_name}"))
+              placeholder: t('carload.placeholder.select', thing: t("activerecord.attributes.#{class_name}.#{label_attribute}"))
             }
           }
       elsif needs_upload?(model_name, attribute_name) and image?(attribute_name)

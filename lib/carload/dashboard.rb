@@ -18,9 +18,7 @@ module Carload
         model_a = options.keys.first
         model_b = options.values.first
         options.shift
-        options[:name] = model_b
-        @@models[model_a] ||= ModelSpec.new
-        @@models[model_a].associated_models[model_b] = options
+        @@models[model_a].associations[model_b] = options
       end
 
       def models
@@ -49,11 +47,12 @@ module Carload
   end
           RUBY
           default = false
-          next if spec.associated_models.empty?
-          spec.associated_models.each_value do |associated_model|
-            next unless associated_model[:choose_by]
+          next if spec.associations.empty?
+          spec.associations.each_value do |association|
+            next unless association[:choose_by]
+            reflection = association[:reflection]
             content << <<-RUBY
-  associate(#{{ name.to_sym => associated_model[:name], choose_by: associated_model[:choose_by].to_sym }})
+  associate(#{{ name.to_sym => reflection.name, choose_by: association[:choose_by] }})
             RUBY
           end
         end

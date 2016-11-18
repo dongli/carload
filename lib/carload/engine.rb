@@ -13,9 +13,15 @@ module Carload
       # Fill up associations of models.
       Dashboard.models.each do |name, spec|
         spec.klass = name.to_s.camelize.constantize
-        spec.klass.reflect_on_all_associations.each do |association|
-          spec.handle_association association, rescue: true
+        spec.klass.reflect_on_all_associations.each do |reflection|
+          next unless spec.associations.has_key? reflection.name
+          spec.associations[reflection.name][:reflection] = reflection
+          # Record real class name.
+          if reflection.options.has_key? :class_name
+            spec.associations[reflection.name][:class_name] = reflection.options[:class_name].to_s.underscore.to_sym
+          end
         end
+        spec.process_associaitons
       end
       # Reopen model classes to add pg text search.
       case (Carload.search_engine rescue nil)
@@ -56,16 +62,16 @@ module Carload
       end
       # Reopen model classes to handle polymorphic association.
       Dashboard.models.each do |name, spec|
-        spec.associated_models.values.select { |x| x[:polymorphic] == true }.each do |associated_model|
+        spec.associations.values.select { |x| x[:reflection].options[:polymorphic] }.each do |association|
           polymorphic_objects = []
-          associated_model[:instance_models].each do |instance_model|
+          association[:instance_models].each do |instance_model|
             Dashboard.model(instance_model).klass.all.each do |object|
-              polymorphic_objects << ["#{object.class} - #{object.send(associated_model[:choose_by])}", "#{object.id},#{object.class}"]
+              polymorphic_objects << ["#{object.class} - #{object.send(association[:choose_by])}", "#{object.id},#{object.class}"]
             end
           end
           spec.klass.class_eval do
             class_eval <<-RUBY
-              def self.#{associated_model[:name].to_s.pluralize}
+              def self.#{association[:reflection].name.to_s.pluralize}
                 #{polymorphic_objects}
               end
             RUBY
