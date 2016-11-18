@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    carload (0.4.5)
+    carload (0.5.1)
       bootstrap-sass (~> 3.3)
       elasticsearch-model (~> 0.1)
       elasticsearch-rails (~> 0.1)
