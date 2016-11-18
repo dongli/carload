@@ -48,11 +48,10 @@ module Carload
           RUBY
           default = false
           next if spec.associations.empty?
-          spec.associations.each_value do |association|
+          spec.associations.each do |name, association|
             next unless association[:choose_by]
-            reflection = association[:reflection]
             content << <<-RUBY
-  associate(#{{ name.to_sym => reflection.name, choose_by: association[:choose_by] }})
+  associate(#{{ name.to_sym => name, choose_by: association[:choose_by] }})
             RUBY
           end
         end
