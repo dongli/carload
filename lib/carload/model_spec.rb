@@ -53,7 +53,8 @@ module Carload
             @attributes[:permitted] << { :"#{reflection.delegate_reflection.name.to_s.singularize}_ids" => [] }
           end
         elsif reflection.options[:polymorphic]
-          ActiveRecord::Base.descendants.each do |_model|
+          Dir.glob("#{Rails.root}/app/models/*.rb").each do |filename|
+            _model = File.basename(filename).gsub('.rb', '').camelize.constantize rescue next
             next if _model.name == 'ApplicationRecord' or _model.name.underscore == @name.to_s
             _model.reflect_on_all_associations.each do |_reflection|
               next unless _reflection.options[:as] == reflection.name

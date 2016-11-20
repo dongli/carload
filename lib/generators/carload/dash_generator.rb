@@ -8,7 +8,7 @@ module Carload
       # Process model once atime.
       model_specs = {}
       ActiveRecord::Base.descendants.each do |model| # Rails 5 can use ApplicationRecord.
-        next if model.name == 'ApplicationRecord' or model.name == 'PgSearch::Document'
+        next if ['ApplicationRecord', 'PgSearch::Document', 'ActsAsTaggableOn::Tagging', 'ActsAsTaggableOn::Tag'].include? model.name
         model_specs[model.name.underscore.to_sym] = ModelSpec.new model
       end
       model_name = file_name.to_sym
@@ -18,14 +18,18 @@ module Carload
         spec.associations.each do |name, association|
           next if association[:filtered]
           reflection = association[:reflection]
-          next if reflection.class ==
-          if reflection.options[:polymorphic]
-            attributes = association[:attributes]
-          elsif reflection.options[:class_name]
-            attributes = model_specs[reflection.options[:class_name].underscore.to_sym].attributes.permitted.select { |x| x.class != Hash }
-          else
-            attributes = model_specs[reflection.name.to_s.singularize.to_sym].attributes.permitted.select { |x| x.class != Hash }
+          begin
+            if reflection.options[:polymorphic]
+              attributes = association[:attributes]
+            elsif reflection.options[:class_name]
+              attributes = model_specs[reflection.options[:class_name].underscore&.to_sym].attributes.permitted.select { |x| x.class != Hash }
+            else
+              attributes = model_specs[reflection.name.to_s.singularize.to_sym].attributes.permitted.select { |x| x.class != Hash }
+            end
+          rescue
+            attributes = nil
           end
+          next unless attributes
           if attributes.size == 1
             association[:choose_by] = attributes.first
           else

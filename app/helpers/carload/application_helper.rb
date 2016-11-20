@@ -16,8 +16,8 @@ module Carload
       false
     end
 
-    def image? attribute_name
-      attribute_name.to_s =~ /image|logo|img/
+    def image? model_name, attribute_name
+      attribute_name.to_s =~ /image|logo|img/ or (Dashboard.model(model_name).attributes.images.include? attribute_name.to_sym rescue nil)
     end
 
     def associated_model_name model_name, attribute_name

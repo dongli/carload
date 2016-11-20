@@ -63,16 +63,16 @@ module Carload
       # Reopen model classes to handle polymorphic association.
       Dashboard.models.each do |name, spec|
         spec.associations.values.select { |x| x[:reflection].options[:polymorphic] }.each do |association|
-          polymorphic_objects = []
-          association[:instance_models].each do |instance_model|
-            Dashboard.model(instance_model).klass.all.each do |object|
-              polymorphic_objects << ["#{object.class} - #{object.send(association[:choose_by])}", "#{object.id},#{object.class}"]
-            end
-          end
           spec.klass.class_eval do
             class_eval <<-RUBY
               def self.#{association[:reflection].name.to_s.pluralize}
-                #{polymorphic_objects}
+                polymorphic_objects = []
+                #{association[:instance_models]}.each do |instance_model|
+                  Dashboard.model(instance_model).klass.all.each do |object|
+                    polymorphic_objects << ["\#{object.class} - \#{object.send(:#{association[:choose_by]})}", "\#{object.id},\#{object.class}"]
+                  end
+                end
+                polymorphic_objects
               end
             RUBY
           end
