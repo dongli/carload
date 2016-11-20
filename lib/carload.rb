@@ -29,7 +29,7 @@ module Carload
       raise UnsupportedError.new("upload solution #{@@config[:upload_solution]}")
     end
     @@config[:search_engine] ||= :elasticsearch
-    if not [:elasticsearch, :pg_search].include? @@config[:search_engine]
+    if not [:elasticsearch, :pg_search, :none].include? @@config[:search_engine]
       raise UnsupportedError.new("search engine #{@@config[:search_engine]}")
     end
     # Define configuation helpers.

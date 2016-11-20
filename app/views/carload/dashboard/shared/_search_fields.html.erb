@@ -1,6 +1,8 @@
-<div id='search-input'>
-  <%= form_for :search, url: dashboard_search_path(@model_names), method: :get do |f| %>
-    <span class='icon'><%= fa_icon('search') %></span>
-    <%= f.text_field :query, class: 'form-control', placeholder: 'Search ...', value: @query %>
-  <% end %>
-</div>
+<% if Carload.search_engine != :none %>
+  <div id='search-input'>
+    <%= form_for :search, url: dashboard_search_path(@model_names), method: :get do |f| %>
+      <span class='icon'><%= fa_icon('search') %></span>
+      <%= f.text_field :query, class: 'form-control', placeholder: 'Search ...', value: @query %>
+    <% end %>
+  </div>
+<% end %>
